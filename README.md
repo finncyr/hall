@@ -2,6 +2,8 @@
 Project to implement an echo effect. Done in 2k19 under the course of SMMD @ TH Cologne
 
 
+*Current development of reverb in ./Src/LAB/LAB1/reverb_intr.c*
+
 ## Deadlines
 
 Base Project Presentation - 8 Jan 2k20

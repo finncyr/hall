@@ -28,6 +28,9 @@ extern uint16_t interrupt_counter; //counter for the interrupts
 //#define LAB1_ECHO_INTR
 //#define LAB1_SINE_LUT_INTR
 //#define LAB1_SINE_LUT_BUF_INTR
+
+#define LAB1_REVERB_INTR
+
 #endif
 
 #ifdef LAB2
