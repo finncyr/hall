@@ -19,8 +19,7 @@ C_SRCS += \
 ../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.c \
 ../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.c \
 ../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c_ex.c \
-../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_ltdc.c \
-../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_ltdc_ex.c \
+../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_iwdg.c \
 ../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pcd.c \
 ../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pcd_ex.c \
 ../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pwr.c \
@@ -57,8 +56,7 @@ OBJS += \
 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o \
 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.o \
 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c_ex.o \
-./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_ltdc.o \
-./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_ltdc_ex.o \
+./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_iwdg.o \
 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pcd.o \
 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pcd_ex.o \
 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pwr.o \
@@ -95,8 +93,7 @@ C_DEPS += \
 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.d \
 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.d \
 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c_ex.d \
-./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_ltdc.d \
-./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_ltdc_ex.d \
+./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_iwdg.d \
 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pcd.d \
 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pcd_ex.d \
 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pwr.d \
@@ -123,7 +120,7 @@ Drivers/STM32F7xx_HAL_Driver/Src/%.o: ../Drivers/STM32F7xx_HAL_Driver/Src/%.c
 	@echo 'Building file: $<'
 	@echo 'Invoking: MCU GCC Compiler'
 	@echo $(PWD)
-	arm-none-eabi-gcc -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-d16 -DUSE_HAL_DRIVER -DSTM32F769xx -DARM_MATH_CM7 '-D__FPU_PRESENT=1' '-D__weak=__attribute__((weak))' '-D__packed="__attribute__((__packed__))"' -I"/Users/elders/Eclipse/DMA_Display/Inc" -I"/Users/elders/Eclipse/DMA_Display/Drivers/BSP" -I"/Users/elders/Eclipse/DMA_Display/Drivers/STM32F7xx_HAL_Driver/Inc" -I"/Users/elders/Eclipse/DMA_Display/Drivers/STM32F7xx_HAL_Driver/Inc/Legacy" -I"/Users/elders/Eclipse/DMA_Display/Drivers/CMSIS/Device/ST/STM32F7xx/Include" -I"/Users/elders/Eclipse/DMA_Display/Drivers/CMSIS/Include" -I"/Users/elders/Eclipse/DMA_Display/Drivers/CMSIS/Include" -I"/Users/elders/Eclipse/DMA_Display/Drivers/CMSIS/Include" -I"/Users/elders/Eclipse/DMA_Display/Drivers/CMSIS/Include" -I"/Users/elders/Eclipse/DMA_Display/Drivers/CMSIS/Include" -I"/Users/elders/Eclipse/DMA_Display/Drivers/CMSIS/Include" -I"/Users/elders/Eclipse/DMA_Display/Drivers/CMSIS/Include"  -Og -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" -o "$@" "$<"
+	arm-none-eabi-gcc -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-d16 '-D__weak=__attribute__((weak))' '-D__packed="__attribute__((__packed__))"' -DUSE_HAL_DRIVER -DSTM32F769xx -I"/Users/elders/Eclipse/Lab_IT/Inc" -I"/Users/elders/Eclipse/Lab_IT/Drivers/STM32F7xx_HAL_Driver/Inc" -I"/Users/elders/Eclipse/Lab_IT/Drivers/STM32F7xx_HAL_Driver/Inc/Legacy" -I"/Users/elders/Eclipse/Lab_IT/Drivers/CMSIS/Device/ST/STM32F7xx/Include" -I"/Users/elders/Eclipse/Lab_IT/Drivers/CMSIS/Include" -I"/Users/elders/Eclipse/Lab_IT/Inc"  -Og -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

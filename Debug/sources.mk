@@ -15,12 +15,12 @@ C_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
-Drivers/BSP/Components \
-Drivers/BSP/STM32F769I-Discovery \
 Drivers/STM32F7xx_HAL_Driver/Src \
 Src/Audio \
-Src/Display \
-Src/FFT \
+Src/LAB/LAB1 \
+Src/LAB/LAB2 \
+Src/LAB/LAB3 \
+Src/LAB/LAB4 \
 Src \
 startup \
 

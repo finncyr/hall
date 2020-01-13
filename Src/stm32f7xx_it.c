@@ -1,11 +1,10 @@
-/* USER CODE BEGIN Header */
 /**
   ******************************************************************************
   * @file    stm32f7xx_it.c
   * @brief   Interrupt Service Routines.
   ******************************************************************************
   *
-  * COPYRIGHT(c) 2018 STMicroelectronics
+  * COPYRIGHT(c) 2017 STMicroelectronics
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -31,93 +30,35 @@
   *
   ******************************************************************************
   */
-/* USER CODE END Header */
-
 /* Includes ------------------------------------------------------------------*/
-#include "main.h"
+#include "stm32f7xx_hal.h"
+#include "stm32f7xx.h"
 #include "stm32f7xx_it.h"
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-/* USER CODE END Includes */
 
-/* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN TD */
-
-/* USER CODE END TD */
-
-/* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
- 
-/* USER CODE END PD */
-
-/* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
-
-/* USER CODE END PM */
-
-/* Private variables ---------------------------------------------------------*/
-/* USER CODE BEGIN PV */
-
-/* USER CODE END PV */
-
-/* Private function prototypes -----------------------------------------------*/
-/* USER CODE BEGIN PFP */
-
-/* USER CODE END PFP */
-
-/* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
 extern CEC_HandleTypeDef hcec;
-extern DMA_HandleTypeDef hdma_sai1_a;
-extern DMA_HandleTypeDef hdma_sai1_b;
 extern SAI_HandleTypeDef hsai_BlockA1;
 extern SAI_HandleTypeDef hsai_BlockB1;
-/* USER CODE BEGIN EV */
-
-/* USER CODE END EV */
+extern PCD_HandleTypeDef hpcd_USB_OTG_HS;
 
 /******************************************************************************/
-/*           Cortex-M7 Processor Interruption and Exception Handlers          */ 
+/*            Cortex-M7 Processor Interruption and Exception Handlers         */ 
 /******************************************************************************/
-/**
-  * @brief This function handles System service call via SWI instruction.
-  */
-void SVC_Handler(void)
-{
-  /* USER CODE BEGIN SVCall_IRQn 0 */
-
-  /* USER CODE END SVCall_IRQn 0 */
-  /* USER CODE BEGIN SVCall_IRQn 1 */
-
-  /* USER CODE END SVCall_IRQn 1 */
-}
 
 /**
-  * @brief This function handles Pendable request for system service.
-  */
-void PendSV_Handler(void)
-{
-  /* USER CODE BEGIN PendSV_IRQn 0 */
-
-  /* USER CODE END PendSV_IRQn 0 */
-  /* USER CODE BEGIN PendSV_IRQn 1 */
-
-  /* USER CODE END PendSV_IRQn 1 */
-}
-
-/**
-  * @brief This function handles System tick timer.
-  */
+* @brief This function handles System tick timer.
+*/
 void SysTick_Handler(void)
 {
   /* USER CODE BEGIN SysTick_IRQn 0 */
 
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
+  HAL_SYSTICK_IRQHandler();
   /* USER CODE BEGIN SysTick_IRQn 1 */
 
   /* USER CODE END SysTick_IRQn 1 */
@@ -131,8 +72,8 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
-  * @brief This function handles EXTI line[15:10] interrupts.
-  */
+* @brief This function handles EXTI line[15:10] interrupts.
+*/
 void EXTI15_10_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI15_10_IRQn 0 */
@@ -146,51 +87,36 @@ void EXTI15_10_IRQHandler(void)
 }
 
 /**
-  * @brief This function handles DMA2 stream1 global interrupt.
-  */
-void DMA2_Stream1_IRQHandler(void)
+* @brief This function handles USB On The Go HS global interrupt.
+*/
+void OTG_HS_IRQHandler(void)
 {
-  /* USER CODE BEGIN DMA2_Stream1_IRQn 0 */
+  /* USER CODE BEGIN OTG_HS_IRQn 0 */
 
-  /* USER CODE END DMA2_Stream1_IRQn 0 */
-  HAL_DMA_IRQHandler(&hdma_sai1_a);
-  /* USER CODE BEGIN DMA2_Stream1_IRQn 1 */
+  /* USER CODE END OTG_HS_IRQn 0 */
+  HAL_PCD_IRQHandler(&hpcd_USB_OTG_HS);
+  /* USER CODE BEGIN OTG_HS_IRQn 1 */
 
-  /* USER CODE END DMA2_Stream1_IRQn 1 */
+  /* USER CODE END OTG_HS_IRQn 1 */
 }
 
 /**
-  * @brief This function handles DMA2 stream4 global interrupt.
-  */
-void DMA2_Stream4_IRQHandler(void)
-{
-  /* USER CODE BEGIN DMA2_Stream4_IRQn 0 */
-
-  /* USER CODE END DMA2_Stream4_IRQn 0 */
-  HAL_DMA_IRQHandler(&hdma_sai1_b);
-  /* USER CODE BEGIN DMA2_Stream4_IRQn 1 */
-
-  /* USER CODE END DMA2_Stream4_IRQn 1 */
-}
-
-/**
-  * @brief This function handles SAI1 global interrupt.
-  */
+* @brief This function handles SAI1 global interrupt.
+*/
 void SAI1_IRQHandler(void)
 {
   /* USER CODE BEGIN SAI1_IRQn 0 */
 
   /* USER CODE END SAI1_IRQn 0 */
   HAL_SAI_IRQHandler(&hsai_BlockA1);
-  HAL_SAI_IRQHandler(&hsai_BlockB1);
   /* USER CODE BEGIN SAI1_IRQn 1 */
 
   /* USER CODE END SAI1_IRQn 1 */
 }
 
 /**
-  * @brief This function handles HDMI-CEC global interrupt.
-  */
+* @brief This function handles HDMI-CEC global interrupt.
+*/
 void CEC_IRQHandler(void)
 {
   /* USER CODE BEGIN CEC_IRQn 0 */

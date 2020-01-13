@@ -1,6 +1,6 @@
 /**
  *****************************************************************************
- * @file    audio.c
+ * @file    audio.h
  * @brief   Audio handling of with WM8994 Codec
  * @author  Daniel Lohmann
  ****************************************************************************** 
@@ -16,17 +16,15 @@ extern SAI_HandleTypeDef hsai_BlockA1;
 extern SAI_HandleTypeDef hsai_BlockB1;
 extern I2C_HandleTypeDef hi2c4;
 uint8_t input;
-float32_t SamplingRateHz;
 
 #ifdef AUDIO_DMA
-int32_t bufferTransmit[BUFFER_SIZE * 2];
-int32_t bufferReceive[BUFFER_SIZE * 2];
+uint32_t bufferTransmit[BUFFER_SIZE * 2];
+uint32_t bufferReceive[BUFFER_SIZE * 2];
 
-void (*ptrHalf_Callback)() = NULL;
-void (*ptrFull_Callback)() = NULL;
+void (*ptrHalf_Callback)(AudioDMABuffer_t* buffer) = NULL;
+void (*ptrFull_Callback)(AudioDMABuffer_t* buffer) = NULL;
 
-int32_t* transmitBuffer = bufferTransmit;
-AudioDMABuffer_t ProcessingBuffer;
+uint32_t* transmitBuffer = bufferTransmit;
 
 void HAL_SAI_TxCpltCallback(SAI_HandleTypeDef* hsai)
 {
@@ -40,22 +38,25 @@ void HAL_SAI_TxHalfCpltCallback(SAI_HandleTypeDef* hsai)
 
 void HAL_SAI_RxHalfCpltCallback(SAI_HandleTypeDef* hsai)
 {
-    ProcessingBuffer.Input = bufferReceive;
-    ProcessingBuffer.Output = transmitBuffer;
+    AudioDMABuffer_t buffer;
+    buffer.Input = bufferReceive;
+    buffer.Output = transmitBuffer;
+
     if (ptrHalf_Callback != NULL)
     {
-        ptrHalf_Callback();
+        ptrHalf_Callback(&buffer);
     }
 }
 
 void HAL_SAI_RxCpltCallback(SAI_HandleTypeDef* hsai)
 {
-    ProcessingBuffer.Input = bufferReceive + BUFFER_SIZE;
-    ProcessingBuffer.Output = transmitBuffer;
+    AudioDMABuffer_t buffer;
+    buffer.Input = bufferReceive + BUFFER_SIZE;
+    buffer.Output = transmitBuffer;
     
     if (ptrFull_Callback != NULL)
     {
-        ptrFull_Callback();
+        ptrFull_Callback(&buffer);
     }
 }
 
@@ -85,49 +86,48 @@ void HAL_SAI_ErrorCallback(SAI_HandleTypeDef* hsai)
  * 						All the time this is the output value for the right channel
  * 						When both inputs are used also the in samples are provided in this storage
  */
-void (*ptrSample_Callback)(uint32_t inLeft, uint32_t inRight, uint32_t* outLeft, uint32_t* outRight) = NULL;
-
+void (*ptrSample_Callback)(int32_t inLeft, int32_t inRight, int32_t* outLeft, int32_t* outRight) = NULL;
+int32_t inleft = 0;
+int32_t inright = 0;
+int32_t outleft = 0;
+int32_t outright = 0;
 void SAI_IT(SAI_HandleTypeDef *hsai)
 {
 	if (((hsai_BlockB1.Instance->SR & SAI_xSR_FLVL) >> 16) > 1)
 	{
     SAI_HandleTypeDef *hsai = &hsai_BlockB1;
-    uint32_t inleft = 0;
-    uint32_t inright = 0;
-    uint32_t outleft = 0;
-    uint32_t outright = 0;
 
     if (input & WM8994_INPUT_SLOT2) //When the microphones are switched on time slot 1 is also used
     {
-      inleft =  (hsai->Instance->DR)<<8;
-      outleft = (hsai->Instance->DR)<<8;
-      inright = (hsai->Instance->DR)<<8;
-      outright = (hsai->Instance->DR)<<8;
+      inleft =  (hsai->Instance->DR);
+      outleft = (hsai->Instance->DR);
+			inright = (hsai->Instance->DR);
+			outright = (hsai->Instance->DR);
     }
     else
     {
-      inleft =  (hsai->Instance->DR)<<8;
-      inright = (hsai->Instance->DR)<<8;
+      inleft =  (hsai->Instance->DR);
+			inright = (hsai->Instance->DR);
     }
 
-    if (ptrSample_Callback != NULL)
-    {
-        //call audio processing routine
-        ptrSample_Callback(inleft, inright, &outleft, & outright);
-    }
 
 		if (input & WM8994_INPUT_SLOT2) //When the microphones are switched on time slot 1 is also used
 		{
-			hsai_BlockA1.Instance->DR = outleft>>8;
-			hsai_BlockA1.Instance->DR = outleft>>8;
-			hsai_BlockA1.Instance->DR = outright>>8;
-			hsai_BlockA1.Instance->DR = outright>>8;
+			hsai_BlockA1.Instance->DR = outleft;
+			hsai_BlockA1.Instance->DR = outleft;
+			hsai_BlockA1.Instance->DR = outright;
+			hsai_BlockA1.Instance->DR = outright;
 		}
 		else
 		{
-			hsai_BlockA1.Instance->DR = outleft>>8;
-			hsai_BlockA1.Instance->DR = outright>>8;
+			hsai_BlockA1.Instance->DR = outleft;
+			hsai_BlockA1.Instance->DR = outright;
 		}
+    if (ptrSample_Callback != NULL)
+    {
+      //call audio processing routine
+      ptrSample_Callback(inleft, inright, &outleft, & outright);
+    }
 	}
 }
 #endif
@@ -155,7 +155,7 @@ typedef struct {
 } SAI_CLOCK_CONFIG_t;
 
 /**
- * @brief   Set the mupliplicator and divisor settings structure for the PLLI2S and SAI2 peripherals
+ * @brief   Set the mupliplicator and divisor settings sturctur for the PLLI2S and SAI2 peripherals
  *          according to the frequency selection. The output of divisor PLLM must be 1MHz.
  *
  * @param   frequencySelection  Selected frequency, this should be specified through a WM8994_FREQ_... define
@@ -206,46 +206,37 @@ void SetClockConfigurationParameter(uint8_t frequencySelection, SAI_CLOCK_CONFIG
     {
         case WM8994_FREQ_8K:
             config->MCKDIV = 12;
-            SamplingRateHz = 8000.0f;
             break;
         case WM8994_FREQ_11_025K:
             config->MCKDIV = 8;
-            SamplingRateHz = 11025.0f;
             break;
         case WM8994_FREQ_12K:
             config->MCKDIV = 8;
-            SamplingRateHz = 12000.0f;
             break;
         case WM8994_FREQ_16K:
             config->MCKDIV = 6;
-            SamplingRateHz = 16000.0f;
             break;
         case WM8994_FREQ_22_05K:
             config->MCKDIV = 4;
-            SamplingRateHz = 22050.0f;
             break;
         case WM8994_FREQ_24K:
             config->MCKDIV = 4;
-            SamplingRateHz = 24000.0f;
             break;
         case WM8994_FREQ_32K:
             config->MCKDIV = 6;
-            SamplingRateHz = 32000.0f;
             break;
         case WM8994_FREQ_44_1K:
             config->MCKDIV = 2;
-            SamplingRateHz = 44100.0f;
             break;
         case WM8994_FREQ_48K:
             config->MCKDIV = 2;
-            SamplingRateHz = 48000.0f;
             break;
     }
     return;
 }
 
 /**
- * @brief   Changes multiplicator and divisor settings of the PLLI2S and SAI2 peripherals
+ * @brief   Changes mupliplicator and divisor settings of the PLLI2S and SAI2 peripherals
  *
  * @param   selectedInput   Selected Input, this changes the amout of used slots
  * @param   config          Parameter values that should be configured
@@ -303,12 +294,12 @@ HAL_StatusTypeDef ReconfigureSAIClock(SAI_CLOCK_CONFIG_t* config, uint8_t select
 
 	if (HAL_SAI_Init(&hsai_BlockA1) != HAL_OK)
 	{
-		Error_Handler();
+		_Error_Handler(__FILE__, __LINE__);
 	}
 
 	if (HAL_SAI_Init(&hsai_BlockB1) != HAL_OK)
 	{
-		Error_Handler();
+		_Error_Handler(__FILE__, __LINE__);
 	}
 
 	return HAL_OK;
@@ -316,7 +307,7 @@ HAL_StatusTypeDef ReconfigureSAIClock(SAI_CLOCK_CONFIG_t* config, uint8_t select
 
 #ifdef AUDIO_DMA
 /**
- * @brief Initializes the SAI and the audio codec for dma use
+ * @brief Initialises the SAI and the audio codec for dma use
  *
  * @param selectedInput     Selected input, specified through WM8994_INPUT_... defines or line_in and/or mic_in defines
  * @param selectedFrequency Selected sample rate, specified through WM8994_FREQ_...K defines or hz..... defines
@@ -326,8 +317,8 @@ HAL_StatusTypeDef ReconfigureSAIClock(SAI_CLOCK_CONFIG_t* config, uint8_t select
 void AudioInitDMA(
     const uint8_t selectedFrequency,
     const uint8_t selectedInput,
-    void (*half_Callback)(),
-    void (*full_Callback)()
+    void (*half_Callback)(AudioDMABuffer_t* buffer),
+    void (*full_Callback)(AudioDMABuffer_t* buffer)
 )
 {
     ptrHalf_Callback = half_Callback;
@@ -356,7 +347,7 @@ void AudioInitDMA(
 HAL_StatusTypeDef AudioInitIT(
     const uint8_t selectedFrequency,
     const uint8_t selectedInput,
-    void (*sample_Callback)(uint32_t inLeft, uint32_t inRight, uint32_t* outLeft, uint32_t* outRight)
+    void (*sample_Callback)(int32_t inLeft, int32_t inRight, int32_t* outLeft, int32_t* outRight)
 )
 {
     ptrSample_Callback = sample_Callback;
@@ -382,7 +373,7 @@ HAL_StatusTypeDef AudioInitIT(
     __HAL_SAI_ENABLE(&hsai_BlockB1);
     __HAL_SAI_ENABLE(&hsai_BlockA1);
     __HAL_SAI_ENABLE_IT(&hsai_BlockA1, SAI_IT_OVRUDR | SAI_IT_FREQ | SAI_IT_WCKCFG); //TODO maybe remove the other two
-  
+
     __HAL_UNLOCK(&hsai_BlockA1);
     __HAL_UNLOCK(&hsai_BlockB1);
 

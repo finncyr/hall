@@ -5,7 +5,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2018 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2017 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -40,6 +40,7 @@
  extern "C" {
 #endif
 
+#include "main.h"
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 
@@ -65,9 +66,9 @@
 #define HAL_SDRAM_MODULE_ENABLED
 /* #define HAL_HASH_MODULE_ENABLED   */
 /* #define HAL_I2S_MODULE_ENABLED   */
-/* #define HAL_IWDG_MODULE_ENABLED   */
+#define HAL_IWDG_MODULE_ENABLED
 /* #define HAL_LPTIM_MODULE_ENABLED   */
-#define HAL_LTDC_MODULE_ENABLED
+/* #define HAL_LTDC_MODULE_ENABLED   */
 #define HAL_QSPI_MODULE_ENABLED
 /* #define HAL_RNG_MODULE_ENABLED   */
 #define HAL_RTC_MODULE_ENABLED
@@ -90,7 +91,6 @@
 /* #define HAL_MDIOS_MODULE_ENABLED   */
 /* #define HAL_SMBUS_MODULE_ENABLED   */
 /* #define HAL_MMC_MODULE_ENABLED   */
-/* #define HAL_EXTI_MODULE_ENABLED   */
 #define HAL_GPIO_MODULE_ENABLED
 #define HAL_DMA_MODULE_ENABLED
 #define HAL_RCC_MODULE_ENABLED
@@ -168,7 +168,7 @@
   * @brief Uncomment the line below to expanse the "assert_param" macro in the 
   *        HAL drivers code
   */
-/* #define USE_FULL_ASSERT    1U */
+/* #define USE_FULL_ASSERT    1 */
 
 /* ################## Ethernet peripheral configuration ##################### */
 
@@ -243,10 +243,6 @@
 #ifdef HAL_RCC_MODULE_ENABLED
   #include "stm32f7xx_hal_rcc.h"
 #endif /* HAL_RCC_MODULE_ENABLED */
-
-#ifdef HAL_EXTI_MODULE_ENABLED
-  #include "stm32f7xx_hal_exti.h"
-#endif /* HAL_EXTI_MODULE_ENABLED */
 
 #ifdef HAL_GPIO_MODULE_ENABLED
   #include "stm32f7xx_hal_gpio.h"
