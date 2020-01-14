@@ -4,7 +4,10 @@
 #ifdef LAB1_REVERB_INTR
 
 volatile int32_t audio_chR=0;    
-volatile int32_t audio_chL=0;    
+volatile int32_t audio_chL=0;
+
+void combFilter(uint32_t *samples, uint32_t *output, int samplesLength, int delayInMilliSec, int decayFactor, int sampleRate);
+void allPassFilter(uint32_t *samples, uint32_t *output, int samplesLength, int sampleRate);
 
 int32_t buffer[DELAY_BUF_SIZE];
 int32_t i = 0;
@@ -31,13 +34,21 @@ void Init()
         Sample_Callback);
 }
 
-uint32_t combFilter(uint32_t *samples, uint32_t *output, int samplesLength, int delayInMilliSec, int decayFactor, int sampleRate){
+// Submethod for Comb Filter
+void combFilter(uint32_t *samples, uint32_t *output, int samplesLength, int delayInMilliSec, int decayFactor, int sampleRate){
 
     int delayOfSamples = delayInMilliSec * (sampleRate/1000);
 
+	for(int i = 0; i < samplesLength; i++) output[i] = samples[i];
+
     for (int i = 0; i < samplesLength - delayOfSamples; i++){
-        output[i+delayOfSamples] += samples[i] * decayFactor;
+        output[i+delayOfSamples] += output[i] * decayFactor;
     }
+}
+
+// Submethod for Allpass-Filter
+void allPassFilter(uint32_t *samples, uint32_t *output, int samplesLength, int sampleRate){
+
 }
 
 #endif
