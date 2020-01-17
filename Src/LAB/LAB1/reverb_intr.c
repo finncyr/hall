@@ -9,7 +9,6 @@ volatile int32_t audio_chL=0;
 void combFilter(uint32_t *samples, uint32_t *output, int samplesLength, int delayInMilliSec, int decayFactor, int sampleRate);
 void allPassFilter(uint32_t *samples, uint32_t *output, int samplesLength, int sampleRate);
 
-int32_t buffer[DELAY_BUF_SIZE];
 int32_t i = 0;
 
 void Sample_Callback(
