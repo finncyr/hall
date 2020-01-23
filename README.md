@@ -1,6 +1,9 @@
 # hall
 Project to implement an echo effect. Done in 2k19 under the course of SMMD @ TH Cologne
 
+![](https://img.shields.io/github/contributors/finncyr/hall?color=blue)
+![](https://img.shields.io/github/license/finncyr/hall)
+![](https://img.shields.io/github/last-commit/finncyr/hall)
 
 *Current development of reverb in ./Src/LAB/LAB1/reverb_intr.c*
 
