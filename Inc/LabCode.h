@@ -64,7 +64,7 @@ extern uint16_t interrupt_counter; //counter for the interrupts
 #ifdef LAB4
 //#define LAB4_IIR_INTR
 //#define LAB4_IIRSOS_INTR
-#define LAB4_IIR_SOL_INTR
+//#define LAB4_IIR_SOL_INTR
 //#define LAB4_IIRSOS_SOL_INTR
 //#define LAB4_LOOP_INTR
 #endif
