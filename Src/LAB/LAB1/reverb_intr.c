@@ -46,8 +46,27 @@ void combFilter(uint32_t *samples, uint32_t *output, int samplesLength, int dela
 }
 
 // Submethod for Allpass-Filter
-void allPassFilter(uint32_t *samples, uint32_t *output, int samplesLength, int sampleRate){
+void allPassFilter(uint32_t *samples, uint32_t *output, int samplesLength, int sampleRate, float32_t decayFactor){
 
+	int delaySamples = (int) ((float) 89.27 * (sampleRate / 1000));
+
+	uint32_t allPassFilterSamples[samplesLength];
+	
+	for(int i = 0; i < samplesLength; i++){
+		allPassFilterSamples[i] = samples[i];
+
+		if(i - delaySamples >= 0){
+			allPassFilterSamples[i] += -1*decayFactor * allPassFilterSamples[i-delaySamples];
+		}
+		if(i - delaySamples >= 1){
+			allPassFilterSamples[i] += decayFactor * allPassFilterSamples[i+20-delaySamples];
+		}
+	}
+
+	///TODO: Anti-Clipping & Smoothing out Samples
+	//
+	///
+	
 }
 
 #endif
