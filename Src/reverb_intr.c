@@ -3,6 +3,7 @@
 
 #ifdef LAB1_REVERB_INTR
 
+
 volatile int32_t audio_chR=0;    
 volatile int32_t audio_chL=0;
 
@@ -15,13 +16,51 @@ void Sample_Callback(
     uint32_t inLeft,
     uint32_t inRight,
     uint32_t* outLeft,
-    uint32_t* outRight
+    uint32_t* outRight,
+	bool activateReverb,
+	bool activateDelay
 )
 {	   	
   audio_chL = inLeft;      
   audio_chR = inRight;
   
   // BOB! DO SOMETHING!
+  if(activateDelay){
+	  //use combFilter as delay
+	  allPassFilter(&audio_chL, &audio_chL, samplesLength, Fs, decayFactor);
+	  allPassFilter(&audio_chR, &audio_chR, samplesLength, Fs, decayFactor);
+  }
+
+
+  if(activateReverb){
+	  uint32_t inLeft_Comb0, inLeft_Comb1,inLeft_Comb2,inLeft_Comb3;
+	  uint32_t inRight_Comb0,inRight_Comb1,inRight_Comb2,inRight_Comb3;
+	  uint32_t inLeft_Comb;
+	  uint32_t inRight_Comb;
+
+	  //parallel comb filters left channel
+	  combFilter(&audio_chL, &inLeft_Comb0, samplesLength, comb0_delay_time, comb0_loop_gain, Fs);
+	  combFilter(&audio_chL, &inLeft_Comb1, samplesLength, comb1_delay_time, comb1loop_gain, Fs);
+	  combFilter(&audio_chL, &inLeft_Comb2, samplesLength, comb2_delay_time, comb2_loop_gain, Fs);
+	  combFilter(&audio_chL, &inLeft_Comb3, samplesLength, comb3_delay_time, comb3_loop_gain, Fs);
+
+	  //parallel comb filters right channel
+	  combFilter(&audio_chR, &inRight_Comb0, samplesLength, comb0_delay_time, comb0_loop_gain, Fs);
+	  combFilter(&audio_chR, &inRight_Comb1, samplesLength, comb1_delay_time, comb1_loop_gain, Fs);
+	  combFilter(&audio_chR, &inRight_Comb2, samplesLength, comb2_delay_time, comb2_loop_gain, Fs);
+	  combFilter(&audio_chR, &inRight_Comb3, samplesLength, comb3_delay_time, comb3_loop_gain, Fs);
+
+	  //todo sum up comb filter signals and limit them
+
+	  //Serial allpass filters left
+	  allPassFilter(&audio_chL_Comb, &audio_chL_Comb, samplesLength, Fs, decayFactor);
+	  allPassFilter(&audio_chL_Comb, &audio_chL_Comb, samplesLength, Fs, decayFactor);
+
+	  //Serial allpass filters right
+	  allPassFilter(&audio_chR_Comb, &audio_chR_Comb, samplesLength, Fs, decayFactor);
+	  allPassFilter(&audio_chR_Comb, &audio_chR_Comb, samplesLength, Fs, decayFactor);
+  }
+
   
   *outLeft = audio_chR;     
   *outRight = audio_chR;
