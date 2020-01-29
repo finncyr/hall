@@ -1,5 +1,6 @@
 // reverb_intr.c
 #include "LabCode.h"
+#include "reverb.h"
 
 #ifdef LAB1_REVERB_INTR
 
