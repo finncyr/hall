@@ -13,6 +13,9 @@
 
 #include "main.h"
 #include "stm32f7xx_hal.h"
+#include "stdint.h"
+#include "stm32f7xx_hal_i2c.h"
+#include "stm32f7xx_hal_def.h"
 
 #define CODEC_ADDRESS 52
 

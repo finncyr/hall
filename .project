@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>Lab_IT</name>
+	<name>DMA_Display</name>
 	<comment />
 	<projects>
 	</projects>
@@ -24,7 +24,4 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 		<nature>fr.ac6.mcu.ide.core.MCUProjectNature</nature>
 	</natures>
-	<linkedResources>
-		
-	</linkedResources>
 </projectDescription>

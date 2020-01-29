@@ -10,12 +10,14 @@
 #ifndef __AUDIO_H
 #define __AUDIO_H
 
+#include "arm_const_structs.h"
 #include "stm32f7xx_hal.h"
 #include "Audio/wm8994_config.h"
 #include <stdbool.h>
+#include "stdint.h"
 
-//#define AUDIO_DMA
-#define AUDIO_IT
+#define AUDIO_DMA
+//#define AUDIO_IT
 
 #define hz48000 WM8994_FREQ_48K
 #define hz44100	WM8994_FREQ_44_1K
@@ -32,12 +34,23 @@
 
 #define NOISELEVEL 8000
 
-/*! \brief Creates a pseud-random value at 16bit basis*/
+/*! \brief Creates a pseudo-random value at 16bit basis*/
 short prbs(void);
 
 #ifdef AUDIO_DMA
-
-#define BUFFER_SIZE 128
+/**
+ * Define the size of the input and output ping/pong buffers for audio DMA
+ * Thus each buffer contains BUFFER_SIZE samples. In the case of 2 audio
+ * channels (stereo), the samples for the left and the right channel are
+ * interleaved. This means that the buffers contain  BUFFER_SIZE / 2 samples
+ * per channel!
+ */
+// Defined the size of the input and output buffers for audio DMA
+//#define BUFFER_SIZE 128
+//#define BUFFER_SIZE 256
+#define BUFFER_SIZE 512
+//#define BUFFER_SIZE 1024
+//#define BUFFER_SIZE 4096
 
 #define __D ((BUFFER_SIZE / 2)*2)
 #if __D == BUFFER_SIZE
@@ -47,7 +60,7 @@ short prbs(void);
 #endif
 
 /** 
- * Struct which handles a pair of an input and ouput buffer to DMA ping/pong operation
+ * Struct which handles a pair of an input and output buffer to DMA ping/pong operation
  */
 typedef struct  {
     /** 
@@ -55,17 +68,26 @@ typedef struct  {
      * @details Right and Left channel are alternating contained in the buffer.
      * The length of the buffer is @ref BUFFER_SIZE
      */
-    uint32_t* Input;
+    int32_t* Input;
     /** 
      * @brief Audio output buffer
      * @details Right and Left channel are alternating contained in the buffer.
      * The length of the buffer is @ref BUFFER_SIZE
      */
-    uint32_t* Output;
+    int32_t* Output;
 } AudioDMABuffer_t;
 
+extern int32_t* transmitBuffer;
 /**
- * @brief Initialises the SAI and the audio codec for dma use
+ * Object of type AudioDMABuffer_t which always points to the buffers used for processing
+ */
+extern AudioDMABuffer_t ProcessingBuffer;
+/**
+ * The sampling rate used in Hz
+ */
+extern float32_t SamplingRateHz;
+/**
+ * @brief Initializes the SAI and the audio codec for dma use
  *
  * @param selectedInput     Selected input, specified through WM8994_INPUT_... defines or default is line_in
  * @param selectedFrequency Selected sample rate, specified through WM8994_FREQ_...K defines or hz..... defines
@@ -75,8 +97,8 @@ typedef struct  {
 void AudioInitDMA(
     const uint8_t selectedFrequency,
     const uint8_t selectedInput,
-    void (*half_Callback)(AudioDMABuffer_t* buffer),
-    void (*full_Callback)(AudioDMABuffer_t* buffer)
+    void (*half_Callback)(),
+    void (*full_Callback)()
 );
 
 #endif
@@ -84,7 +106,7 @@ void AudioInitDMA(
 #ifdef AUDIO_IT
 
 /**
- * @brief Initialises the SAI and the audio codec for sample interrupt use
+ * @brief Initializes the SAI and the audio codec for sample interrupt use
  *
  * @param selectedInput     Selected input, specified through WM8994_INPUT_... defines or default is line_in
  * @param selectedFrequency Selected sample rate, specified through WM8994_FREQ_...K defines or hz..... defines
@@ -93,7 +115,7 @@ void AudioInitDMA(
 HAL_StatusTypeDef AudioInitIT(
     const uint8_t selectedFrequency,
     const uint8_t selectedInput,
-    void (*sample_Callback)(int32_t inLeft, int32_t inRight, int32_t* outLeft, int32_t* outRight)
+    void (*sample_Callback)(uint32_t inLeft, uint32_t inRight, uint32_t* outLeft, uint32_t* outRight)
 );
 
 #endif

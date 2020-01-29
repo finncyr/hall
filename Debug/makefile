@@ -9,13 +9,13 @@ RM := rm -rf
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include startup/subdir.mk
--include Src/LAB/LAB4/subdir.mk
--include Src/LAB/LAB3/subdir.mk
--include Src/LAB/LAB2/subdir.mk
--include Src/LAB/LAB1/subdir.mk
+-include Src/FFT/subdir.mk
+-include Src/Display/subdir.mk
 -include Src/Audio/subdir.mk
 -include Src/subdir.mk
 -include Drivers/STM32F7xx_HAL_Driver/Src/subdir.mk
+-include Drivers/BSP/STM32F769I-Discovery/subdir.mk
+-include Drivers/BSP/Components/subdir.mk
 -include subdir.mk
 -include objects.mk
 
@@ -39,7 +39,7 @@ all: hall.elf
 hall.elf: $(OBJS) $(USER_OBJS) ../STM32F769NIHx_FLASH.ld
 	@echo 'Building target: $@'
 	@echo 'Invoking: MCU GCC Linker'
-	arm-none-eabi-gcc -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-d16 -L"C:\Users\ManuelFaatz\STM32Cube\Repository\STM32Cube_FW_F7_V1.15.0\Drivers\CMSIS\Lib\GCC" -specs=nosys.specs -specs=nano.specs -T"../STM32F769NIHx_FLASH.ld" -Wl,-Map=output.map -Wl,--gc-sections -o "hall.elf" @"objects.list" $(USER_OBJS) $(LIBS) -lm
+	arm-none-eabi-gcc -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-d16 -L"C:\Users\ManuelFaatz\STM32Cube\Repository\STM32Cube_FW_F7_V1.15.0\Drivers\CMSIS\Lib\GCC" -specs=nosys.specs -specs=nano.specs -u_printf_float -T"../STM32F769NIHx_FLASH.ld" -Wl,-Map=output.map -Wl,--gc-sections -o "hall.elf" @"objects.list" $(USER_OBJS) $(LIBS) -lm
 	@echo 'Finished building target: $@'
 	@echo ' '
 	$(MAKE) --no-print-directory post-build
@@ -50,8 +50,8 @@ clean:
 	-@echo ' '
 
 post-build:
-	-@echo 'Generating binary and Printing size information:'
-	arm-none-eabi-objcopy -O binary "hall.elf" "hall.bin"
+	-@echo 'Generating hex and Printing size information:'
+	arm-none-eabi-objcopy -O ihex "hall.elf" "hall.hex"
 	arm-none-eabi-size "hall.elf"
 	-@echo ' '
 
