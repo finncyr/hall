@@ -1,5 +1,6 @@
 // reverb_intr.c
 #include "LabCode.h"
+#include "reverb.h"
 
 #ifdef LAB1_REVERB_INTR
 
@@ -8,7 +9,8 @@ volatile int32_t audio_chR=0;
 volatile int32_t audio_chL=0;
 
 void combFilter(uint32_t *samples, uint32_t *output, int samplesLength, int delayInMilliSec, int decayFactor, int sampleRate);
-void allPassFilter(uint32_t *samples, uint32_t *output, int samplesLength, int sampleRate);
+void allPassFilter(uint32_t *samples, uint32_t *output, int samplesLength, int sampleRate, float32_t decayFactor);
+
 
 int32_t i = 0;
 
@@ -20,15 +22,18 @@ void Sample_Callback(
 	bool activateReverb,
 	bool activateDelay
 )
-{	   	
+{
+  int i;
+  int bufferLength = sizeof(inLeft)/sizeof(uint32_t);
+
   audio_chL = inLeft;      
   audio_chR = inRight;
   
-  // BOB! DO SOMETHING!
+
   if(activateDelay){
 	  //use combFilter as delay
-	  allPassFilter(&audio_chL, &audio_chL, samplesLength, Fs, decayFactor);
-	  allPassFilter(&audio_chR, &audio_chR, samplesLength, Fs, decayFactor);
+	  combFilter(&audio_chL, &audio_chL, samples_length,delay_delay_time , delay_loop_gain, Fs);
+	  combFilter(&audio_chR, &audio_chR, samples_length,delay_delay_time , delay_loop_gain, Fs);
   }
 
 
@@ -39,26 +44,30 @@ void Sample_Callback(
 	  uint32_t inRight_Comb;
 
 	  //parallel comb filters left channel
-	  combFilter(&audio_chL, &inLeft_Comb0, samplesLength, comb0_delay_time, comb0_loop_gain, Fs);
-	  combFilter(&audio_chL, &inLeft_Comb1, samplesLength, comb1_delay_time, comb1loop_gain, Fs);
-	  combFilter(&audio_chL, &inLeft_Comb2, samplesLength, comb2_delay_time, comb2_loop_gain, Fs);
-	  combFilter(&audio_chL, &inLeft_Comb3, samplesLength, comb3_delay_time, comb3_loop_gain, Fs);
+	  combFilter(&audio_chL, &inLeft_Comb0, samples_length, comb0_delay_time, comb0_loop_gain, Fs);
+	  combFilter(&audio_chL, &inLeft_Comb1, samples_length, comb1_delay_time, comb1_loop_gain, Fs);
+	  combFilter(&audio_chL, &inLeft_Comb2, samples_length, comb2_delay_time, comb2_loop_gain, Fs);
+	  combFilter(&audio_chL, &inLeft_Comb3, samples_length, comb3_delay_time, comb3_loop_gain, Fs);
 
 	  //parallel comb filters right channel
-	  combFilter(&audio_chR, &inRight_Comb0, samplesLength, comb0_delay_time, comb0_loop_gain, Fs);
-	  combFilter(&audio_chR, &inRight_Comb1, samplesLength, comb1_delay_time, comb1_loop_gain, Fs);
-	  combFilter(&audio_chR, &inRight_Comb2, samplesLength, comb2_delay_time, comb2_loop_gain, Fs);
-	  combFilter(&audio_chR, &inRight_Comb3, samplesLength, comb3_delay_time, comb3_loop_gain, Fs);
+	  combFilter(&audio_chR, &inRight_Comb0, samples_length, comb0_delay_time, comb0_loop_gain, Fs);
+	  combFilter(&audio_chR, &inRight_Comb1, samples_length, comb1_delay_time, comb1_loop_gain, Fs);
+	  combFilter(&audio_chR, &inRight_Comb2, samples_length, comb2_delay_time, comb2_loop_gain, Fs);
+	  combFilter(&audio_chR, &inRight_Comb3, samples_length, comb3_delay_time, comb3_loop_gain, Fs);
 
-	  //todo sum up comb filter signals and limit them
+	  //summing up combfilter signals
+	  for(i=0; i < bufferLength; i++){
+		  inLeft_Comb = inLeft_Comb0[i] +inLeft_Comb1[i] + inLeft_Comb2[i] + inLeft_Comb3[i];
+		  inRight_Comb = inRight_Comb0[i] +inRight_Comb1[i] + inRight_Comb2[i] + inRight_Comb3[i];
+	  }
 
 	  //Serial allpass filters left
-	  allPassFilter(&audio_chL_Comb, &audio_chL_Comb, samplesLength, Fs, decayFactor);
-	  allPassFilter(&audio_chL_Comb, &audio_chL_Comb, samplesLength, Fs, decayFactor);
+	  allPassFilter(&inLeft_Comb, &inLeft_Comb, samples_length, Fs, allpass0_loop_gain);
+	  allPassFilter(&inLeft_Comb, &inLeft_Comb, samples_length, Fs, allpass0_loop_gain);
 
 	  //Serial allpass filters right
-	  allPassFilter(&audio_chR_Comb, &audio_chR_Comb, samplesLength, Fs, decayFactor);
-	  allPassFilter(&audio_chR_Comb, &audio_chR_Comb, samplesLength, Fs, decayFactor);
+	  allPassFilter(&inRight_Comb, &inRight_Comb, samples_length, Fs, allpass1_loop_gain);
+	  allPassFilter(&inRight_Comb, &inRight_Comb, samples_length, Fs, allpass1_loop_gain);
   }
 
   
@@ -112,7 +121,7 @@ void allPassFilter(uint32_t *samples, uint32_t *output, int samplesLength, int s
 				max = abs(allPassFilterSamples[i]);
 		}
 		
-		for(int i=0; i < length(allPassFilterSamples); i++)
+		for(int i=0; i < sizeof(allPassFilterSamples)/sizeof(uint32_t); i++)
 		{
 			uint32_t currentValue = allPassFilterSamples[i];
 			value = ((value + (currentValue - value))/max);

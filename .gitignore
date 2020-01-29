@@ -1,55 +1,32 @@
-# Prerequisites
-*.d
-
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
-
-# Linker output
-*.ilk
-*.map
-*.exp
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
-
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
-
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
-
-# VS Code Settings
-.vscode/
+Debug/*
+Drivers/*
+Middlewares/*
+Inc/bsp_driver_sd.h
+Inc/fatfs.h
+Inc/fatfs_platform.h
+Inc/ffconf.h
+Inc/sd_diskio.h
+Inc/stm32f7xx_hal_conf.h
+Inc/stm32f7xx_it.h
+Inc/usb_host.h
+Inc/usbh_conf.h
+Inc/usbh_platform.h
+Src/bsp_driver_sd.c
+Src/fatfs.c
+Src/fatfs_platform.c
+Src/sd_diskio.c
+Src/stm32f7xx_hal_conf.c
+Src/stm32f7xx_it.c
+Src/stm32f7xx_hal_msp.c
+Src/system_stm32f7xx.c
+Src/usb_host.c
+Src/usbh_conf.c
+Src/usbh_platform.c
+STM32F746NGHx_FLASH.ld
+.cproject
+.mxproject
+.project
+.settings
+/Debug/
+STM32F746G-DISCO.xml
+Doc/*

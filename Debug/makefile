@@ -33,13 +33,13 @@ endif
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: Lab_IT.elf
+all: hall.elf
 
 # Tool invocations
-Lab_IT.elf: $(OBJS) $(USER_OBJS) ../STM32F769NIHx_FLASH.ld
+hall.elf: $(OBJS) $(USER_OBJS) ../STM32F769NIHx_FLASH.ld
 	@echo 'Building target: $@'
 	@echo 'Invoking: MCU GCC Linker'
-	arm-none-eabi-gcc -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-d16 -L"/Users/elders/STM32Cube/Repository/STM32Cube_FW_F7_V1.12.0/Drivers/CMSIS/Lib/GCC" -specs=nosys.specs -specs=nano.specs -T"../STM32F769NIHx_FLASH.ld" -Wl,-Map=output.map -Wl,--gc-sections -o "Lab_IT.elf" @"objects.list" $(USER_OBJS) $(LIBS) -lm
+	arm-none-eabi-gcc -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-d16 -L"C:\Users\ManuelFaatz\STM32Cube\Repository\STM32Cube_FW_F7_V1.15.0\Drivers\CMSIS\Lib\GCC" -specs=nosys.specs -specs=nano.specs -T"../STM32F769NIHx_FLASH.ld" -Wl,-Map=output.map -Wl,--gc-sections -o "hall.elf" @"objects.list" $(USER_OBJS) $(LIBS) -lm
 	@echo 'Finished building target: $@'
 	@echo ' '
 	$(MAKE) --no-print-directory post-build
@@ -51,8 +51,8 @@ clean:
 
 post-build:
 	-@echo 'Generating binary and Printing size information:'
-	arm-none-eabi-objcopy -O binary "Lab_IT.elf" "Lab_IT.bin"
-	arm-none-eabi-size "Lab_IT.elf"
+	arm-none-eabi-objcopy -O binary "hall.elf" "hall.bin"
+	arm-none-eabi-size "hall.elf"
 	-@echo ' '
 
 .PHONY: all clean dependents

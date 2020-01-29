@@ -64,6 +64,7 @@
 "Src/LAB/LAB4/loop_intr.o"
 "Src/LabCode.o"
 "Src/main.o"
+"Src/reverb_intr.o"
 "Src/stm32f7xx_hal_msp.o"
 "Src/stm32f7xx_it.o"
 "Src/system_stm32f7xx.o"
