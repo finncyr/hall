@@ -63,9 +63,23 @@ void allPassFilter(uint32_t *samples, uint32_t *output, int samplesLength, int s
 		}
 	}
 
-	///TODO: Anti-Clipping & Smoothing out Samples
-	//
-	///
+	//This is for smoothing out the samples and normalizing the audio. Without implementing this, the samples overflow causing clipping of audio
+		uint32_t value = allPassFilterSamples[0];
+		uint32_t max = 0;
+		
+		for(int i=0; i < samplesLength; i++)
+		{
+			if(abs(allPassFilterSamples[i]) > max)
+				max = abs(allPassFilterSamples[i]);
+		}
+		
+		for(int i=0; i < length(allPassFilterSamples); i++)
+		{
+			uint32_t currentValue = allPassFilterSamples[i];
+			value = ((value + (currentValue - value))/max);
+
+			allPassFilterSamples[i] = value;
+		}
 	
 }
 
