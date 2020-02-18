@@ -3,7 +3,7 @@
   * @file    stm32f7xx_hal_i2c_ex.c
   * @author  MCD Application Team
   * @brief   I2C Extended HAL module driver.
-  *          This file provides firmware functions to manage the following 
+  *          This file provides firmware functions to manage the following
   *          functionalities of I2C Extended peripheral:
   *           + Extended features functions
   *
@@ -22,9 +22,12 @@
                      ##### How to use this driver #####
   ==============================================================================
   [..] This driver provides functions to:
-    (#) Configure I2C Analog noise filter using the function HAL_I2CEx_ConfigAnalogFilter()
-    (#) Configure I2C Digital noise filter using the function HAL_I2CEx_ConfigDigitalFilter()
-    (#) Configure the enable or disable of fast mode plus driving capability using the functions :
+    (#) Configure I2C Analog noise filter using the function
+  HAL_I2CEx_ConfigAnalogFilter()
+    (#) Configure I2C Digital noise filter using the function
+  HAL_I2CEx_ConfigDigitalFilter()
+    (#) Configure the enable or disable of fast mode plus driving capability
+  using the functions :
           (++) HAL_I2CEx_EnableFastModePlus()
           (++) HAL_I2CEx_DisableFastModePlus()
   @endverbatim
@@ -33,26 +36,33 @@
   *
   * <h2><center>&copy; COPYRIGHT(c) 2017 STMicroelectronics</center></h2>
   *
-  * Redistribution and use in source and binary forms, with or without modification,
+  * Redistribution and use in source and binary forms, with or without
+  modification,
   * are permitted provided that the following conditions are met:
   *   1. Redistributions of source code must retain the above copyright notice,
   *      this list of conditions and the following disclaimer.
-  *   2. Redistributions in binary form must reproduce the above copyright notice,
-  *      this list of conditions and the following disclaimer in the documentation
+  *   2. Redistributions in binary form must reproduce the above copyright
+  notice,
+  *      this list of conditions and the following disclaimer in the
+  documentation
   *      and/or other materials provided with the distribution.
-  *   3. Neither the name of STMicroelectronics nor the names of its contributors
+  *   3. Neither the name of STMicroelectronics nor the names of its
+  contributors
   *      may be used to endorse or promote products derived from this software
   *      without specific prior written permission.
   *
   * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
   * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  ARE
   * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
   * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
   * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
   * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+  LIABILITY,
+  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+  USE
   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   *
   ******************************************************************************
@@ -62,13 +72,13 @@
 #include "stm32f7xx_hal.h"
 
 /** @addtogroup STM32F7xx_HAL_Driver
-  * @{
-  */
+ * @{
+ */
 
 /** @defgroup I2CEx I2CEx
-  * @brief I2C Extended HAL module driver
-  * @{
-  */
+ * @brief I2C Extended HAL module driver
+ * @{
+ */
 
 #ifdef HAL_I2C_MODULE_ENABLED
 
@@ -80,8 +90,8 @@
 /* Private functions ---------------------------------------------------------*/
 
 /** @defgroup I2CEx_Exported_Functions I2C Extended Exported Functions
-  * @{
-  */
+ * @{
+ */
 
 /** @defgroup I2CEx_Exported_Functions_Group1 Extended features functions
   * @brief    Extended features functions
@@ -91,7 +101,7 @@
                       ##### Extended features functions #####
  ===============================================================================
     [..] This section provides functions allowing to:
-      (+) Configure Noise Filters 
+      (+) Configure Noise Filters
       (+) Configure Fast Mode Plus
 
 @endverbatim
@@ -99,20 +109,20 @@
   */
 
 /**
-  * @brief  Configure I2C Analog noise filter.
-  * @param  hi2c Pointer to a I2C_HandleTypeDef structure that contains
-  *                the configuration information for the specified I2Cx peripheral.
-  * @param  AnalogFilter New state of the Analog filter.
-  * @retval HAL status
-  */
-HAL_StatusTypeDef HAL_I2CEx_ConfigAnalogFilter(I2C_HandleTypeDef *hi2c, uint32_t AnalogFilter)
-{
+ * @brief  Configure I2C Analog noise filter.
+ * @param  hi2c Pointer to a I2C_HandleTypeDef structure that contains
+ *                the configuration information for the specified I2Cx
+ * peripheral.
+ * @param  AnalogFilter New state of the Analog filter.
+ * @retval HAL status
+ */
+HAL_StatusTypeDef HAL_I2CEx_ConfigAnalogFilter(I2C_HandleTypeDef *hi2c,
+                                               uint32_t AnalogFilter) {
   /* Check the parameters */
   assert_param(IS_I2C_ALL_INSTANCE(hi2c->Instance));
   assert_param(IS_I2C_ANALOG_FILTER(AnalogFilter));
 
-  if(hi2c->State == HAL_I2C_STATE_READY)
-  {
+  if (hi2c->State == HAL_I2C_STATE_READY) {
     /* Process Locked */
     __HAL_LOCK(hi2c);
 
@@ -135,30 +145,29 @@ HAL_StatusTypeDef HAL_I2CEx_ConfigAnalogFilter(I2C_HandleTypeDef *hi2c, uint32_t
     __HAL_UNLOCK(hi2c);
 
     return HAL_OK;
-  }
-  else
-  {
+  } else {
     return HAL_BUSY;
   }
 }
 
 /**
-  * @brief  Configure I2C Digital noise filter.
-  * @param  hi2c Pointer to a I2C_HandleTypeDef structure that contains
-  *                the configuration information for the specified I2Cx peripheral.
-  * @param  DigitalFilter Coefficient of digital noise filter between Min_Data=0x00 and Max_Data=0x0F.
-  * @retval HAL status
-  */
-HAL_StatusTypeDef HAL_I2CEx_ConfigDigitalFilter(I2C_HandleTypeDef *hi2c, uint32_t DigitalFilter)
-{
+ * @brief  Configure I2C Digital noise filter.
+ * @param  hi2c Pointer to a I2C_HandleTypeDef structure that contains
+ *                the configuration information for the specified I2Cx
+ * peripheral.
+ * @param  DigitalFilter Coefficient of digital noise filter between
+ * Min_Data=0x00 and Max_Data=0x0F.
+ * @retval HAL status
+ */
+HAL_StatusTypeDef HAL_I2CEx_ConfigDigitalFilter(I2C_HandleTypeDef *hi2c,
+                                                uint32_t DigitalFilter) {
   uint32_t tmpreg = 0U;
 
   /* Check the parameters */
   assert_param(IS_I2C_ALL_INSTANCE(hi2c->Instance));
   assert_param(IS_I2C_DIGITAL_FILTER(DigitalFilter));
 
-  if(hi2c->State == HAL_I2C_STATE_READY)
-  {
+  if (hi2c->State == HAL_I2C_STATE_READY) {
     /* Process Locked */
     __HAL_LOCK(hi2c);
 
@@ -187,33 +196,33 @@ HAL_StatusTypeDef HAL_I2CEx_ConfigDigitalFilter(I2C_HandleTypeDef *hi2c, uint32_
     __HAL_UNLOCK(hi2c);
 
     return HAL_OK;
-  }
-  else
-  {
+  } else {
     return HAL_BUSY;
   }
 }
 
-#if defined(SYSCFG_PMC_I2C1_FMP)
+#if (defined(SYSCFG_PMC_I2C_PB6_FMP) || defined(SYSCFG_PMC_I2C_PB7_FMP)) ||    \
+    (defined(SYSCFG_PMC_I2C_PB8_FMP) || defined(SYSCFG_PMC_I2C_PB9_FMP)) ||    \
+    (defined(SYSCFG_PMC_I2C1_FMP)) || (defined(SYSCFG_PMC_I2C2_FMP)) ||        \
+    defined(SYSCFG_PMC_I2C3_FMP) || defined(SYSCFG_PMC_I2C4_FMP)
 /**
-  * @brief Enable the I2C fast mode plus driving capability.
-  * @param ConfigFastModePlus Selects the pin.
-  *   This parameter can be one of the @ref I2CEx_FastModePlus values
-  * @note  For I2C1, fast mode plus driving capability can be enabled on all selected
-  *        I2C1 pins using I2C_FASTMODEPLUS_I2C1 parameter or independently
-  *        on each one of the following pins PB6, PB7, PB8 and PB9.
-  * @note  For remaining I2C1 pins (PA14, PA15...) fast mode plus driving capability
-  *        can be enabled only by using I2C_FASTMODEPLUS_I2C1 parameter.
-  * @note  For all I2C2 pins fast mode plus driving capability can be enabled
-  *        only by using I2C_FASTMODEPLUS_I2C2 parameter.
-  * @note  For all I2C3 pins fast mode plus driving capability can be enabled
-  *        only by using I2C_FASTMODEPLUS_I2C3 parameter.
-  * @note  For all I2C4 pins fast mode plus driving capability can be enabled
-  *        only by using I2C_FASTMODEPLUS_I2C4 parameter.
-  * @retval None
-  */
-void HAL_I2CEx_EnableFastModePlus(uint32_t ConfigFastModePlus)
-{
+ * @brief Enable the I2C fast mode plus driving capability.
+ * @param ConfigFastModePlus Selects the pin.
+ *   This parameter can be one of the @ref I2CEx_FastModePlus values
+ * @note  For I2C1, fast mode plus driving capability can be enabled on all
+ * selected I2C1 pins using I2C_FASTMODEPLUS_I2C1 parameter or independently on
+ * each one of the following pins PB6, PB7, PB8 and PB9.
+ * @note  For remaining I2C1 pins (PA14, PA15...) fast mode plus driving
+ * capability can be enabled only by using I2C_FASTMODEPLUS_I2C1 parameter.
+ * @note  For all I2C2 pins fast mode plus driving capability can be enabled
+ *        only by using I2C_FASTMODEPLUS_I2C2 parameter.
+ * @note  For all I2C3 pins fast mode plus driving capability can be enabled
+ *        only by using I2C_FASTMODEPLUS_I2C3 parameter.
+ * @note  For all I2C4 pins fast mode plus driving capability can be enabled
+ *        only by using I2C_FASTMODEPLUS_I2C4 parameter.
+ * @retval None
+ */
+void HAL_I2CEx_EnableFastModePlus(uint32_t ConfigFastModePlus) {
   /* Check the parameter */
   assert_param(IS_I2C_FASTMODEPLUS(ConfigFastModePlus));
 
@@ -225,24 +234,23 @@ void HAL_I2CEx_EnableFastModePlus(uint32_t ConfigFastModePlus)
 }
 
 /**
-  * @brief Disable the I2C fast mode plus driving capability.
-  * @param ConfigFastModePlus Selects the pin.
-  *   This parameter can be one of the @ref I2CEx_FastModePlus values
-  * @note  For I2C1, fast mode plus driving capability can be disabled on all selected
-  *        I2C1 pins using I2C_FASTMODEPLUS_I2C1 parameter or independently
-  *        on each one of the following pins PB6, PB7, PB8 and PB9.
-  * @note  For remaining I2C1 pins (PA14, PA15...) fast mode plus driving capability
-  *        can be disabled only by using I2C_FASTMODEPLUS_I2C1 parameter.
-  * @note  For all I2C2 pins fast mode plus driving capability can be disabled
-  *        only by using I2C_FASTMODEPLUS_I2C2 parameter.
-  * @note  For all I2C3 pins fast mode plus driving capability can be disabled
-  *        only by using I2C_FASTMODEPLUS_I2C3 parameter.
-  * @note  For all I2C4 pins fast mode plus driving capability can be disabled
-  *        only by using I2C_FASTMODEPLUS_I2C4 parameter.
-  * @retval None
-  */
-void HAL_I2CEx_DisableFastModePlus(uint32_t ConfigFastModePlus)
-{
+ * @brief Disable the I2C fast mode plus driving capability.
+ * @param ConfigFastModePlus Selects the pin.
+ *   This parameter can be one of the @ref I2CEx_FastModePlus values
+ * @note  For I2C1, fast mode plus driving capability can be disabled on all
+ * selected I2C1 pins using I2C_FASTMODEPLUS_I2C1 parameter or independently on
+ * each one of the following pins PB6, PB7, PB8 and PB9.
+ * @note  For remaining I2C1 pins (PA14, PA15...) fast mode plus driving
+ * capability can be disabled only by using I2C_FASTMODEPLUS_I2C1 parameter.
+ * @note  For all I2C2 pins fast mode plus driving capability can be disabled
+ *        only by using I2C_FASTMODEPLUS_I2C2 parameter.
+ * @note  For all I2C3 pins fast mode plus driving capability can be disabled
+ *        only by using I2C_FASTMODEPLUS_I2C3 parameter.
+ * @note  For all I2C4 pins fast mode plus driving capability can be disabled
+ *        only by using I2C_FASTMODEPLUS_I2C4 parameter.
+ * @retval None
+ */
+void HAL_I2CEx_DisableFastModePlus(uint32_t ConfigFastModePlus) {
   /* Check the parameter */
   assert_param(IS_I2C_FASTMODEPLUS(ConfigFastModePlus));
 
@@ -252,22 +260,23 @@ void HAL_I2CEx_DisableFastModePlus(uint32_t ConfigFastModePlus)
   /* Disable fast mode plus driving capability for selected pin */
   CLEAR_BIT(SYSCFG->PMC, (uint32_t)ConfigFastModePlus);
 }
-#endif /* SYSCFG_PMC_I2C1_FMP */
+
+#endif
 /**
-  * @}
-  */
+ * @}
+ */
 
 /**
-  * @}
-  */
+ * @}
+ */
 
 #endif /* HAL_I2C_MODULE_ENABLED */
 /**
-  * @}
-  */
+ * @}
+ */
 
 /**
-  * @}
-  */
+ * @}
+ */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
