@@ -9,10 +9,10 @@ bool data_available = false;
 bool processing_data = false;
 
 //todo: acitvation signals need to be set by IO function
-bool activateDelay = false;
-bool activateReverb = true;
+bool activateDelay = true;
+bool activateReverb = false;
 
-void combFilter(uint32_t *samples, uint32_t *output, int samplesLength, int delayInMilliSec, int decayFactor, int sampleRate);
+void combFilter(uint32_t *samples, uint32_t *output, int samplesLength, int delayInMilliSec, float32_t decayFactor, int sampleRate);
 void allPassFilter(uint32_t *samples, uint32_t *output, int samplesLength, int sampleRate, float32_t decayFactor);
 
 
@@ -33,8 +33,13 @@ void ProcessBuffer()
 
   if(activateDelay){
   	  //use combFilter as delay
-  	  combFilter(audio_chL, audio_chL, samples_length,delay_delay_time , delay_loop_gain, Fs);
+	  uint32_t audio_chL_Del[BUFFER_SIZE/2];
+  	  combFilter(audio_chL, audio_chL_Del, samples_length,delay_delay_time , delay_loop_gain, Fs);
   	  combFilter(audio_chR, audio_chR, samples_length,delay_delay_time , delay_loop_gain, Fs);
+
+  	  for (int n = 0; n < BUFFER_SIZE/2; n++){
+  		  audio_chL[n] = audio_chL_Del[n];
+  	  }
     }
 
 
@@ -103,14 +108,14 @@ uint16_t interrupt_counter = 0; //counter for the interrupts
 
 
 // Submethod for Comb Filter
-void combFilter(uint32_t *samples, uint32_t *output, int samplesLength, int delayInMilliSec, int decayFactor, int sampleRate){
+void combFilter(uint32_t *samples, uint32_t *output, int samplesLength, int delayInMilliSec, float32_t decayFactor, int sampleRate){
 
     int delayOfSamples = delayInMilliSec * (sampleRate/1000);
 
 	for(int i = 0; i < samplesLength; i++) output[i] = samples[i];
 
     for (int i = 0; i < samplesLength - delayOfSamples; i++){
-        output[i+delayOfSamples] += output[i] * decayFactor;
+        output[i+delayOfSamples] += (uint32_t)(output[i] * decayFactor);
     }
 }
 

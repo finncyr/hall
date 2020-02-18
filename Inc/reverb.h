@@ -26,8 +26,8 @@
 #define allpass1_delay_time 1
 
 //delay
-#define delay_loop_gain 1
-#define delay_delay_time 1
+#define delay_loop_gain 0.7
+#define delay_delay_time 2000
 
 #define samples_length  1
 
