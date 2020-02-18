@@ -38,7 +38,7 @@
 #define __STM32F7xx_HAL_RCC_EX_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -62,182 +62,182 @@
   */
 typedef struct
 {
-  uint32_t PLLState;   /*!< The new state of the PLL.
+    uint32_t PLLState;   /*!< The new state of the PLL.
                             This parameter can be a value of @ref RCC_PLL_Config                      */
 
-  uint32_t PLLSource;  /*!< RCC_PLLSource: PLL entry clock source.
+    uint32_t PLLSource;  /*!< RCC_PLLSource: PLL entry clock source.
                             This parameter must be a value of @ref RCC_PLL_Clock_Source               */
 
-  uint32_t PLLM;       /*!< PLLM: Division factor for PLL VCO input clock.
+    uint32_t PLLM;       /*!< PLLM: Division factor for PLL VCO input clock.
                             This parameter must be a number between Min_Data = 2 and Max_Data = 63    */
 
-  uint32_t PLLN;       /*!< PLLN: Multiplication factor for PLL VCO output clock.
+    uint32_t PLLN;       /*!< PLLN: Multiplication factor for PLL VCO output clock.
                             This parameter must be a number between Min_Data = 50 and Max_Data = 432  */
 
-  uint32_t PLLP;       /*!< PLLP: Division factor for main system clock (SYSCLK).
+    uint32_t PLLP;       /*!< PLLP: Division factor for main system clock (SYSCLK).
                             This parameter must be a value of @ref RCC_PLLP_Clock_Divider             */
 
-  uint32_t PLLQ;       /*!< PLLQ: Division factor for OTG FS, SDMMC and RNG clocks.
+    uint32_t PLLQ;       /*!< PLLQ: Division factor for OTG FS, SDMMC and RNG clocks.
                             This parameter must be a number between Min_Data = 2 and Max_Data = 15    */
 #if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
-  uint32_t PLLR;       /*!< PLLR: Division factor for DSI clock.
+    uint32_t PLLR;       /*!< PLLR: Division factor for DSI clock.
                             This parameter must be a number between Min_Data = 2 and Max_Data = 7    */
 #endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
 
-}RCC_PLLInitTypeDef;
+} RCC_PLLInitTypeDef;
 
 /**
   * @brief  PLLI2S Clock structure definition
   */
 typedef struct
 {
-  uint32_t PLLI2SN;    /*!< Specifies the multiplication factor for PLLI2S VCO output clock.
+    uint32_t PLLI2SN;    /*!< Specifies the multiplication factor for PLLI2S VCO output clock.
                             This parameter must be a number between Min_Data = 50 and Max_Data = 432.
                             This parameter will be used only when PLLI2S is selected as Clock Source I2S or SAI */
 
-  uint32_t PLLI2SR;    /*!< Specifies the division factor for I2S clock.
+    uint32_t PLLI2SR;    /*!< Specifies the division factor for I2S clock.
                             This parameter must be a number between Min_Data = 2 and Max_Data = 7.
                             This parameter will be used only when PLLI2S is selected as Clock Source I2S or SAI */
 
-  uint32_t PLLI2SQ;    /*!< Specifies the division factor for SAI1 clock.
+    uint32_t PLLI2SQ;    /*!< Specifies the division factor for SAI1 clock.
                             This parameter must be a number between Min_Data = 2 and Max_Data = 15.
                             This parameter will be used only when PLLI2S is selected as Clock Source SAI */
 
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || defined (STM32F767xx) || \
     defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
-  uint32_t PLLI2SP;    /*!< Specifies the division factor for SPDIF-RX clock.
+    uint32_t PLLI2SP;    /*!< Specifies the division factor for SPDIF-RX clock.
                             This parameter must be a value of @ref RCCEx_PLLI2SP_Clock_Divider.
                             This parameter will be used only when PLLI2S is selected as Clock Source SPDIF-RX */
 #endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
-}RCC_PLLI2SInitTypeDef;
+} RCC_PLLI2SInitTypeDef;
 
 /**
   * @brief  PLLSAI Clock structure definition
   */
 typedef struct
 {
-  uint32_t PLLSAIN;    /*!< Specifies the multiplication factor for PLLI2S VCO output clock.
+    uint32_t PLLSAIN;    /*!< Specifies the multiplication factor for PLLI2S VCO output clock.
                             This parameter must be a number between Min_Data = 50 and Max_Data = 432.
                             This parameter will be used only when PLLSAI is selected as Clock Source SAI or LTDC */
 
-  uint32_t PLLSAIQ;    /*!< Specifies the division factor for SAI1 clock.
+    uint32_t PLLSAIQ;    /*!< Specifies the division factor for SAI1 clock.
                             This parameter must be a number between Min_Data = 2 and Max_Data = 15.
                             This parameter will be used only when PLLSAI is selected as Clock Source SAI or LTDC */
 
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || defined (STM32F767xx) || \
     defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
-  uint32_t PLLSAIR;    /*!< specifies the division factor for LTDC clock
+    uint32_t PLLSAIR;    /*!< specifies the division factor for LTDC clock
                             This parameter must be a number between Min_Data = 2 and Max_Data = 7.
                             This parameter will be used only when PLLSAI is selected as Clock Source LTDC */
 #endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
 
-  uint32_t PLLSAIP;    /*!< Specifies the division factor for 48MHz clock.
+    uint32_t PLLSAIP;    /*!< Specifies the division factor for 48MHz clock.
                             This parameter must be a value of @ref RCCEx_PLLSAIP_Clock_Divider
                             This parameter will be used only when PLLSAI is disabled */
-}RCC_PLLSAIInitTypeDef;
+} RCC_PLLSAIInitTypeDef;
 
 /**
   * @brief  RCC extended clocks structure definition
   */
 typedef struct
 {
-  uint32_t PeriphClockSelection; /*!< The Extended Clock to be configured.
+    uint32_t PeriphClockSelection; /*!< The Extended Clock to be configured.
                                       This parameter can be a value of @ref RCCEx_Periph_Clock_Selection */
 
-  RCC_PLLI2SInitTypeDef PLLI2S;  /*!< PLL I2S structure parameters.
+    RCC_PLLI2SInitTypeDef PLLI2S;  /*!< PLL I2S structure parameters.
                                       This parameter will be used only when PLLI2S is selected as Clock Source I2S or SAI */
 
-  RCC_PLLSAIInitTypeDef PLLSAI;  /*!< PLL SAI structure parameters.
+    RCC_PLLSAIInitTypeDef PLLSAI;  /*!< PLL SAI structure parameters.
                                       This parameter will be used only when PLLI2S is selected as Clock Source SAI or LTDC */
 
-  uint32_t PLLI2SDivQ;           /*!< Specifies the PLLI2S division factor for SAI1 clock.
+    uint32_t PLLI2SDivQ;           /*!< Specifies the PLLI2S division factor for SAI1 clock.
                                       This parameter must be a number between Min_Data = 1 and Max_Data = 32
                                       This parameter will be used only when PLLI2S is selected as Clock Source SAI */
 
-  uint32_t PLLSAIDivQ;           /*!< Specifies the PLLI2S division factor for SAI1 clock.
+    uint32_t PLLSAIDivQ;           /*!< Specifies the PLLI2S division factor for SAI1 clock.
                                       This parameter must be a number between Min_Data = 1 and Max_Data = 32
                                       This parameter will be used only when PLLSAI is selected as Clock Source SAI */
 
-  uint32_t PLLSAIDivR;           /*!< Specifies the PLLSAI division factor for LTDC clock.
+    uint32_t PLLSAIDivR;           /*!< Specifies the PLLSAI division factor for LTDC clock.
                                       This parameter must be one value of @ref RCCEx_PLLSAI_DIVR */
 
-  uint32_t RTCClockSelection;      /*!< Specifies RTC Clock source Selection.
+    uint32_t RTCClockSelection;      /*!< Specifies RTC Clock source Selection.
                                         This parameter can be a value of @ref RCC_RTC_Clock_Source */
 
-  uint32_t I2sClockSelection;      /*!< Specifies I2S Clock source Selection.
+    uint32_t I2sClockSelection;      /*!< Specifies I2S Clock source Selection.
                                         This parameter can be a value of @ref RCCEx_I2S_Clock_Source */
 
-  uint32_t TIMPresSelection;      /*!< Specifies TIM Clock Prescalers Selection.
+    uint32_t TIMPresSelection;      /*!< Specifies TIM Clock Prescalers Selection.
                                        This parameter can be a value of @ref RCCEx_TIM_Prescaler_Selection */
 
-  uint32_t Sai1ClockSelection;     /*!< Specifies SAI1 Clock Prescalers Selection
+    uint32_t Sai1ClockSelection;     /*!< Specifies SAI1 Clock Prescalers Selection
                                         This parameter can be a value of @ref RCCEx_SAI1_Clock_Source */
 
-  uint32_t Sai2ClockSelection;     /*!< Specifies SAI2 Clock Prescalers Selection
+    uint32_t Sai2ClockSelection;     /*!< Specifies SAI2 Clock Prescalers Selection
                                         This parameter can be a value of @ref RCCEx_SAI2_Clock_Source */
 
-  uint32_t Usart1ClockSelection; /*!< USART1 clock source
+    uint32_t Usart1ClockSelection; /*!< USART1 clock source
                                       This parameter can be a value of @ref RCCEx_USART1_Clock_Source */
 
-  uint32_t Usart2ClockSelection; /*!< USART2 clock source
+    uint32_t Usart2ClockSelection; /*!< USART2 clock source
                                       This parameter can be a value of @ref RCCEx_USART2_Clock_Source */
 
-  uint32_t Usart3ClockSelection; /*!< USART3 clock source
+    uint32_t Usart3ClockSelection; /*!< USART3 clock source
                                       This parameter can be a value of @ref RCCEx_USART3_Clock_Source */
 
-  uint32_t Uart4ClockSelection;  /*!< UART4 clock source
+    uint32_t Uart4ClockSelection;  /*!< UART4 clock source
                                       This parameter can be a value of @ref RCCEx_UART4_Clock_Source */
 
-  uint32_t Uart5ClockSelection;  /*!< UART5 clock source
+    uint32_t Uart5ClockSelection;  /*!< UART5 clock source
                                       This parameter can be a value of @ref RCCEx_UART5_Clock_Source */
 
-  uint32_t Usart6ClockSelection;  /*!< USART6 clock source
+    uint32_t Usart6ClockSelection;  /*!< USART6 clock source
                                       This parameter can be a value of @ref RCCEx_USART6_Clock_Source */
 
-  uint32_t Uart7ClockSelection;  /*!< UART7 clock source
+    uint32_t Uart7ClockSelection;  /*!< UART7 clock source
                                       This parameter can be a value of @ref RCCEx_UART7_Clock_Source */
 
-  uint32_t Uart8ClockSelection;  /*!< UART8 clock source
+    uint32_t Uart8ClockSelection;  /*!< UART8 clock source
                                       This parameter can be a value of @ref RCCEx_UART8_Clock_Source */
 
-  uint32_t I2c1ClockSelection;   /*!< I2C1 clock source
+    uint32_t I2c1ClockSelection;   /*!< I2C1 clock source
                                       This parameter can be a value of @ref RCCEx_I2C1_Clock_Source */
 
-  uint32_t I2c2ClockSelection;   /*!< I2C2 clock source
+    uint32_t I2c2ClockSelection;   /*!< I2C2 clock source
                                       This parameter can be a value of @ref RCCEx_I2C2_Clock_Source */
 
-  uint32_t I2c3ClockSelection;   /*!< I2C3 clock source
+    uint32_t I2c3ClockSelection;   /*!< I2C3 clock source
                                       This parameter can be a value of @ref RCCEx_I2C3_Clock_Source */
 
-  uint32_t I2c4ClockSelection;   /*!< I2C4 clock source
+    uint32_t I2c4ClockSelection;   /*!< I2C4 clock source
                                       This parameter can be a value of @ref RCCEx_I2C4_Clock_Source */
 
-  uint32_t Lptim1ClockSelection;   /*!< Specifies LPTIM1 clock source
+    uint32_t Lptim1ClockSelection;   /*!< Specifies LPTIM1 clock source
                                         This parameter can be a value of @ref RCCEx_LPTIM1_Clock_Source */
 
-  uint32_t CecClockSelection;      /*!< CEC clock source
+    uint32_t CecClockSelection;      /*!< CEC clock source
                                         This parameter can be a value of @ref RCCEx_CEC_Clock_Source */
 
-  uint32_t Clk48ClockSelection;    /*!< Specifies 48Mhz clock source used by USB OTG FS, RNG and SDMMC
+    uint32_t Clk48ClockSelection;    /*!< Specifies 48Mhz clock source used by USB OTG FS, RNG and SDMMC
                                         This parameter can be a value of @ref RCCEx_CLK48_Clock_Source */
 
-  uint32_t Sdmmc1ClockSelection;     /*!< SDMMC1 clock source
+    uint32_t Sdmmc1ClockSelection;     /*!< SDMMC1 clock source
                                         This parameter can be a value of @ref RCCEx_SDMMC1_Clock_Source */
 
 #if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) ||\
     defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
-  uint32_t Sdmmc2ClockSelection;     /*!< SDMMC2 clock source
+    uint32_t Sdmmc2ClockSelection;     /*!< SDMMC2 clock source
                                         This parameter can be a value of @ref RCCEx_SDMMC2_Clock_Source */
 #endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F730xx */
 
 #if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
-  uint32_t Dfsdm1ClockSelection;     /*!< DFSDM1 clock source
+    uint32_t Dfsdm1ClockSelection;     /*!< DFSDM1 clock source
                                         This parameter can be a value of @ref RCCEx_DFSDM1_Kernel_Clock_Source */
 
-  uint32_t Dfsdm1AudioClockSelection; /*!< DFSDM1 clock source
+    uint32_t Dfsdm1AudioClockSelection; /*!< DFSDM1 clock source
                                         This parameter can be a value of @ref RCCEx_DFSDM1_AUDIO_Clock_Source */
 #endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
-}RCC_PeriphCLKInitTypeDef;
+} RCC_PeriphCLKInitTypeDef;
 /**
   * @}
   */
@@ -2967,15 +2967,15 @@ typedef struct
   */
 #define __HAL_RCC_GET_USART3_SOURCE() ((uint32_t)(READ_BIT(RCC->DCKCFGR2, RCC_DCKCFGR2_USART3SEL)))
 
- /** @brief  Macro to configure the UART4 clock (UART4CLK).
-  *
-  * @param  __UART4_CLKSOURCE__ specifies the UART4 clock source.
-  *          This parameter can be one of the following values:
-  *            @arg RCC_UART4CLKSOURCE_PCLK1: PCLK1 selected as UART4 clock
-  *            @arg RCC_UART4CLKSOURCE_HSI: HSI selected as UART4 clock
-  *            @arg RCC_UART4CLKSOURCE_SYSCLK: System Clock selected as UART4 clock
-  *            @arg RCC_UART4CLKSOURCE_LSE: LSE selected as UART4 clock
-  */
+/** @brief  Macro to configure the UART4 clock (UART4CLK).
+ *
+ * @param  __UART4_CLKSOURCE__ specifies the UART4 clock source.
+ *          This parameter can be one of the following values:
+ *            @arg RCC_UART4CLKSOURCE_PCLK1: PCLK1 selected as UART4 clock
+ *            @arg RCC_UART4CLKSOURCE_HSI: HSI selected as UART4 clock
+ *            @arg RCC_UART4CLKSOURCE_SYSCLK: System Clock selected as UART4 clock
+ *            @arg RCC_UART4CLKSOURCE_LSE: LSE selected as UART4 clock
+ */
 #define __HAL_RCC_UART4_CONFIG(__UART4_CLKSOURCE__) \
                   MODIFY_REG(RCC->DCKCFGR2, RCC_DCKCFGR2_UART4SEL, (uint32_t)(__UART4_CLKSOURCE__))
 
@@ -2988,15 +2988,15 @@ typedef struct
   */
 #define __HAL_RCC_GET_UART4_SOURCE() ((uint32_t)(READ_BIT(RCC->DCKCFGR2, RCC_DCKCFGR2_UART4SEL)))
 
- /** @brief  Macro to configure the UART5 clock (UART5CLK).
-  *
-  * @param  __UART5_CLKSOURCE__ specifies the UART5 clock source.
-  *          This parameter can be one of the following values:
-  *            @arg RCC_UART5CLKSOURCE_PCLK1: PCLK1 selected as UART5 clock
-  *            @arg RCC_UART5CLKSOURCE_HSI: HSI selected as UART5 clock
-  *            @arg RCC_UART5CLKSOURCE_SYSCLK: System Clock selected as UART5 clock
-  *            @arg RCC_UART5CLKSOURCE_LSE: LSE selected as UART5 clock
-  */
+/** @brief  Macro to configure the UART5 clock (UART5CLK).
+ *
+ * @param  __UART5_CLKSOURCE__ specifies the UART5 clock source.
+ *          This parameter can be one of the following values:
+ *            @arg RCC_UART5CLKSOURCE_PCLK1: PCLK1 selected as UART5 clock
+ *            @arg RCC_UART5CLKSOURCE_HSI: HSI selected as UART5 clock
+ *            @arg RCC_UART5CLKSOURCE_SYSCLK: System Clock selected as UART5 clock
+ *            @arg RCC_UART5CLKSOURCE_LSE: LSE selected as UART5 clock
+ */
 #define __HAL_RCC_UART5_CONFIG(__UART5_CLKSOURCE__) \
                   MODIFY_REG(RCC->DCKCFGR2, RCC_DCKCFGR2_UART5SEL, (uint32_t)(__UART5_CLKSOURCE__))
 
@@ -3009,15 +3009,15 @@ typedef struct
   */
 #define __HAL_RCC_GET_UART5_SOURCE() ((uint32_t)(READ_BIT(RCC->DCKCFGR2, RCC_DCKCFGR2_UART5SEL)))
 
- /** @brief  Macro to configure the USART6 clock (USART6CLK).
-  *
-  * @param  __USART6_CLKSOURCE__ specifies the USART6 clock source.
-  *          This parameter can be one of the following values:
-  *            @arg RCC_USART6CLKSOURCE_PCLK1: PCLK1 selected as USART6 clock
-  *            @arg RCC_USART6CLKSOURCE_HSI: HSI selected as USART6 clock
-  *            @arg RCC_USART6CLKSOURCE_SYSCLK: System Clock selected as USART6 clock
-  *            @arg RCC_USART6CLKSOURCE_LSE: LSE selected as USART6 clock
-  */
+/** @brief  Macro to configure the USART6 clock (USART6CLK).
+ *
+ * @param  __USART6_CLKSOURCE__ specifies the USART6 clock source.
+ *          This parameter can be one of the following values:
+ *            @arg RCC_USART6CLKSOURCE_PCLK1: PCLK1 selected as USART6 clock
+ *            @arg RCC_USART6CLKSOURCE_HSI: HSI selected as USART6 clock
+ *            @arg RCC_USART6CLKSOURCE_SYSCLK: System Clock selected as USART6 clock
+ *            @arg RCC_USART6CLKSOURCE_LSE: LSE selected as USART6 clock
+ */
 #define __HAL_RCC_USART6_CONFIG(__USART6_CLKSOURCE__) \
                   MODIFY_REG(RCC->DCKCFGR2, RCC_DCKCFGR2_USART6SEL, (uint32_t)(__USART6_CLKSOURCE__))
 
@@ -3030,15 +3030,15 @@ typedef struct
   */
 #define __HAL_RCC_GET_USART6_SOURCE() ((uint32_t)(READ_BIT(RCC->DCKCFGR2, RCC_DCKCFGR2_USART6SEL)))
 
- /** @brief  Macro to configure the UART7 clock (UART7CLK).
-  *
-  * @param  __UART7_CLKSOURCE__ specifies the UART7 clock source.
-  *          This parameter can be one of the following values:
-  *            @arg RCC_UART7CLKSOURCE_PCLK1: PCLK1 selected as UART7 clock
-  *            @arg RCC_UART7CLKSOURCE_HSI: HSI selected as UART7 clock
-  *            @arg RCC_UART7CLKSOURCE_SYSCLK: System Clock selected as UART7 clock
-  *            @arg RCC_UART7CLKSOURCE_LSE: LSE selected as UART7 clock
-  */
+/** @brief  Macro to configure the UART7 clock (UART7CLK).
+ *
+ * @param  __UART7_CLKSOURCE__ specifies the UART7 clock source.
+ *          This parameter can be one of the following values:
+ *            @arg RCC_UART7CLKSOURCE_PCLK1: PCLK1 selected as UART7 clock
+ *            @arg RCC_UART7CLKSOURCE_HSI: HSI selected as UART7 clock
+ *            @arg RCC_UART7CLKSOURCE_SYSCLK: System Clock selected as UART7 clock
+ *            @arg RCC_UART7CLKSOURCE_LSE: LSE selected as UART7 clock
+ */
 #define __HAL_RCC_UART7_CONFIG(__UART7_CLKSOURCE__) \
                   MODIFY_REG(RCC->DCKCFGR2, RCC_DCKCFGR2_UART7SEL, (uint32_t)(__UART7_CLKSOURCE__))
 

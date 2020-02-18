@@ -85,38 +85,38 @@
   */
 HAL_StatusTypeDef HAL_PCDEx_SetTxFiFo(PCD_HandleTypeDef *hpcd, uint8_t fifo, uint16_t size)
 {
-  uint8_t i;
-  uint32_t Tx_Offset;
+    uint8_t i;
+    uint32_t Tx_Offset;
 
-  /*  TXn min size = 16 words. (n  : Transmit FIFO index)
-      When a TxFIFO is not used, the Configuration should be as follows:
-          case 1 :  n > m    and Txn is not used    (n,m  : Transmit FIFO indexes)
-         --> Txm can use the space allocated for Txn.
-         case2  :  n < m    and Txn is not used    (n,m  : Transmit FIFO indexes)
-         --> Txn should be configured with the minimum space of 16 words
-     The FIFO is used optimally when used TxFIFOs are allocated in the top
-         of the FIFO.Ex: use EP1 and EP2 as IN instead of EP1 and EP3 as IN ones.
-     When DMA is used 3n * FIFO locations should be reserved for internal DMA registers */
+    /*  TXn min size = 16 words. (n  : Transmit FIFO index)
+        When a TxFIFO is not used, the Configuration should be as follows:
+            case 1 :  n > m    and Txn is not used    (n,m  : Transmit FIFO indexes)
+           --> Txm can use the space allocated for Txn.
+           case2  :  n < m    and Txn is not used    (n,m  : Transmit FIFO indexes)
+           --> Txn should be configured with the minimum space of 16 words
+       The FIFO is used optimally when used TxFIFOs are allocated in the top
+           of the FIFO.Ex: use EP1 and EP2 as IN instead of EP1 and EP3 as IN ones.
+       When DMA is used 3n * FIFO locations should be reserved for internal DMA registers */
 
-  Tx_Offset = hpcd->Instance->GRXFSIZ;
+    Tx_Offset = hpcd->Instance->GRXFSIZ;
 
-  if(fifo == 0U)
-  {
-    hpcd->Instance->DIEPTXF0_HNPTXFSIZ = ((uint32_t)size << 16) | Tx_Offset;
-  }
-  else
-  {
-    Tx_Offset += (hpcd->Instance->DIEPTXF0_HNPTXFSIZ) >> 16;
-    for (i = 0U; i < (fifo - 1U); i++)
+    if(fifo == 0U)
     {
-      Tx_Offset += (hpcd->Instance->DIEPTXF[i] >> 16);
+        hpcd->Instance->DIEPTXF0_HNPTXFSIZ = ((uint32_t)size << 16) | Tx_Offset;
+    }
+    else
+    {
+        Tx_Offset += (hpcd->Instance->DIEPTXF0_HNPTXFSIZ) >> 16;
+        for (i = 0U; i < (fifo - 1U); i++)
+        {
+            Tx_Offset += (hpcd->Instance->DIEPTXF[i] >> 16);
+        }
+
+        /* Multiply Tx_Size by 2 to get higher performance */
+        hpcd->Instance->DIEPTXF[fifo - 1U] = ((uint32_t)size << 16) | Tx_Offset;
     }
 
-    /* Multiply Tx_Size by 2 to get higher performance */
-    hpcd->Instance->DIEPTXF[fifo - 1U] = ((uint32_t)size << 16) | Tx_Offset;
-  }
-
-  return HAL_OK;
+    return HAL_OK;
 }
 
 /**
@@ -127,9 +127,9 @@ HAL_StatusTypeDef HAL_PCDEx_SetTxFiFo(PCD_HandleTypeDef *hpcd, uint8_t fifo, uin
   */
 HAL_StatusTypeDef HAL_PCDEx_SetRxFiFo(PCD_HandleTypeDef *hpcd, uint16_t size)
 {
-  hpcd->Instance->GRXFSIZ = size;
+    hpcd->Instance->GRXFSIZ = size;
 
-  return HAL_OK;
+    return HAL_OK;
 }
 
 /**
@@ -139,14 +139,14 @@ HAL_StatusTypeDef HAL_PCDEx_SetRxFiFo(PCD_HandleTypeDef *hpcd, uint16_t size)
   */
 HAL_StatusTypeDef HAL_PCDEx_ActivateLPM(PCD_HandleTypeDef *hpcd)
 {
-  USB_OTG_GlobalTypeDef *USBx = hpcd->Instance;
+    USB_OTG_GlobalTypeDef *USBx = hpcd->Instance;
 
-  hpcd->lpm_active = 1U;
-  hpcd->LPM_State = LPM_L0;
-  USBx->GINTMSK |= USB_OTG_GINTMSK_LPMINTM;
-  USBx->GLPMCFG |= (USB_OTG_GLPMCFG_LPMEN | USB_OTG_GLPMCFG_LPMACK | USB_OTG_GLPMCFG_ENBESL);
+    hpcd->lpm_active = 1U;
+    hpcd->LPM_State = LPM_L0;
+    USBx->GINTMSK |= USB_OTG_GINTMSK_LPMINTM;
+    USBx->GLPMCFG |= (USB_OTG_GLPMCFG_LPMEN | USB_OTG_GLPMCFG_LPMACK | USB_OTG_GLPMCFG_ENBESL);
 
-  return HAL_OK;
+    return HAL_OK;
 }
 
 /**
@@ -156,13 +156,13 @@ HAL_StatusTypeDef HAL_PCDEx_ActivateLPM(PCD_HandleTypeDef *hpcd)
   */
 HAL_StatusTypeDef HAL_PCDEx_DeActivateLPM(PCD_HandleTypeDef *hpcd)
 {
-  USB_OTG_GlobalTypeDef *USBx = hpcd->Instance;
+    USB_OTG_GlobalTypeDef *USBx = hpcd->Instance;
 
-  hpcd->lpm_active = 0U;
-  USBx->GINTMSK &= ~USB_OTG_GINTMSK_LPMINTM;
-  USBx->GLPMCFG &= ~(USB_OTG_GLPMCFG_LPMEN | USB_OTG_GLPMCFG_LPMACK | USB_OTG_GLPMCFG_ENBESL);
+    hpcd->lpm_active = 0U;
+    USBx->GINTMSK &= ~USB_OTG_GINTMSK_LPMINTM;
+    USBx->GLPMCFG &= ~(USB_OTG_GLPMCFG_LPMEN | USB_OTG_GLPMCFG_LPMACK | USB_OTG_GLPMCFG_ENBESL);
 
-  return HAL_OK;
+    return HAL_OK;
 }
 #endif /* USB_OTG_FS || USB_OTG_HS */
 
@@ -175,13 +175,13 @@ HAL_StatusTypeDef HAL_PCDEx_DeActivateLPM(PCD_HandleTypeDef *hpcd)
   */
 __weak void HAL_PCDEx_LPM_Callback(PCD_HandleTypeDef *hpcd, PCD_LPM_MsgTypeDef msg)
 {
-  /* Prevent unused argument(s) compilation warning */
-  UNUSED(hpcd);
-  UNUSED(msg);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hpcd);
+    UNUSED(msg);
 
-  /* NOTE : This function should not be modified, when the callback is needed,
-            the HAL_PCDEx_LPM_Callback could be implemented in the user file
-   */
+    /* NOTE : This function should not be modified, when the callback is needed,
+              the HAL_PCDEx_LPM_Callback could be implemented in the user file
+     */
 }
 
 /**
@@ -192,13 +192,13 @@ __weak void HAL_PCDEx_LPM_Callback(PCD_HandleTypeDef *hpcd, PCD_LPM_MsgTypeDef m
   */
 __weak void HAL_PCDEx_BCD_Callback(PCD_HandleTypeDef *hpcd, PCD_BCD_MsgTypeDef msg)
 {
-  /* Prevent unused argument(s) compilation warning */
-  UNUSED(hpcd);
-  UNUSED(msg);
+    /* Prevent unused argument(s) compilation warning */
+    UNUSED(hpcd);
+    UNUSED(msg);
 
-  /* NOTE : This function should not be modified, when the callback is needed,
-            the HAL_PCDEx_BCD_Callback could be implemented in the user file
-   */
+    /* NOTE : This function should not be modified, when the callback is needed,
+              the HAL_PCDEx_BCD_Callback could be implemented in the user file
+     */
 }
 
 /**

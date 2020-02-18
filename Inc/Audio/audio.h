@@ -3,8 +3,8 @@
  * @file    audio.h
  * @brief   Audio handling of with WM8994 Codec
  * @author  Daniel Lohmann
- ****************************************************************************** 
- * 
+ ******************************************************************************
+ *
  */
 
 #ifndef __AUDIO_H
@@ -56,20 +56,20 @@ short prbs(void);
 #if __D == BUFFER_SIZE
 
 #else
-    #error BUFFER_SIZE must be an even value for stereo audio
+#error BUFFER_SIZE must be an even value for stereo audio
 #endif
 
-/** 
+/**
  * Struct which handles a pair of an input and output buffer to DMA ping/pong operation
  */
 typedef struct  {
-    /** 
+    /**
      * @brief Audio input buffer
      * @details Right and Left channel are alternating contained in the buffer.
      * The length of the buffer is @ref BUFFER_SIZE
      */
     int32_t* Input;
-    /** 
+    /**
      * @brief Audio output buffer
      * @details Right and Left channel are alternating contained in the buffer.
      * The length of the buffer is @ref BUFFER_SIZE
@@ -120,4 +120,4 @@ HAL_StatusTypeDef AudioInitIT(
 
 #endif
 
-#endif 
+#endif

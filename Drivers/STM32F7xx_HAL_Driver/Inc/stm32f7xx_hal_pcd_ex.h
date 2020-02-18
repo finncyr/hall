@@ -38,7 +38,7 @@
 #define __STM32F7xx_HAL_PCD_EX_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -54,20 +54,20 @@
 /* Exported types ------------------------------------------------------------*/
 typedef enum
 {
-  PCD_LPM_L0_ACTIVE = 0x00, /* on */
-  PCD_LPM_L1_ACTIVE = 0x01, /* LPM L1 sleep */
-}PCD_LPM_MsgTypeDef;
+    PCD_LPM_L0_ACTIVE = 0x00, /* on */
+    PCD_LPM_L1_ACTIVE = 0x01, /* LPM L1 sleep */
+} PCD_LPM_MsgTypeDef;
 
 typedef enum
 {
-  PCD_BCD_ERROR                     = 0xFF,
-  PCD_BCD_CONTACT_DETECTION         = 0xFE,
-  PCD_BCD_STD_DOWNSTREAM_PORT       = 0xFD,
-  PCD_BCD_CHARGING_DOWNSTREAM_PORT  = 0xFC,
-  PCD_BCD_DEDICATED_CHARGING_PORT   = 0xFB,
-  PCD_BCD_DISCOVERY_COMPLETED       = 0x00,
+    PCD_BCD_ERROR                     = 0xFF,
+    PCD_BCD_CONTACT_DETECTION         = 0xFE,
+    PCD_BCD_STD_DOWNSTREAM_PORT       = 0xFD,
+    PCD_BCD_CHARGING_DOWNSTREAM_PORT  = 0xFC,
+    PCD_BCD_DEDICATED_CHARGING_PORT   = 0xFB,
+    PCD_BCD_DISCOVERY_COMPLETED       = 0x00,
 
-}PCD_BCD_MsgTypeDef;
+} PCD_BCD_MsgTypeDef;
 
 /* Exported constants --------------------------------------------------------*/
 /* Exported macros -----------------------------------------------------------*/

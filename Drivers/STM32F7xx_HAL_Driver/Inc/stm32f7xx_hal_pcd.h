@@ -38,7 +38,7 @@
 #define __STM32F7xx_HAL_PCD_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -62,21 +62,21 @@
   */
 typedef enum
 {
-  HAL_PCD_STATE_RESET   = 0x00,
-  HAL_PCD_STATE_READY   = 0x01,
-  HAL_PCD_STATE_ERROR   = 0x02,
-  HAL_PCD_STATE_BUSY    = 0x03,
-  HAL_PCD_STATE_TIMEOUT = 0x04
+    HAL_PCD_STATE_RESET   = 0x00,
+    HAL_PCD_STATE_READY   = 0x01,
+    HAL_PCD_STATE_ERROR   = 0x02,
+    HAL_PCD_STATE_BUSY    = 0x03,
+    HAL_PCD_STATE_TIMEOUT = 0x04
 } PCD_StateTypeDef;
 
 /* Device LPM suspend state */
 typedef enum
 {
-  LPM_L0 = 0x00, /* on */
-  LPM_L1 = 0x01, /* LPM L1 sleep */
-  LPM_L2 = 0x02, /* suspend */
-  LPM_L3 = 0x03, /* off */
-}PCD_LPM_StateTypeDef;
+    LPM_L0 = 0x00, /* on */
+    LPM_L1 = 0x01, /* LPM L1 sleep */
+    LPM_L2 = 0x02, /* suspend */
+    LPM_L3 = 0x03, /* off */
+} PCD_LPM_StateTypeDef;
 
 
 #if defined (USB_OTG_FS) || defined (USB_OTG_HS)
@@ -91,20 +91,20 @@ typedef USB_OTG_EPTypeDef      PCD_EPTypeDef;
   */
 typedef struct
 {
-  PCD_TypeDef             *Instance;   /*!< Register base address              */
-  PCD_InitTypeDef         Init;        /*!< PCD required parameters            */
-  __IO uint8_t            USB_Address; /*!< USB Address                        */
-  PCD_EPTypeDef           IN_ep[16];   /*!< IN endpoint parameters             */
-  PCD_EPTypeDef           OUT_ep[16];  /*!< OUT endpoint parameters            */
-  HAL_LockTypeDef         Lock;        /*!< PCD peripheral status              */
-  __IO PCD_StateTypeDef   State;       /*!< PCD communication state            */
-  uint32_t                Setup[12];   /*!< Setup packet buffer                */
-  PCD_LPM_StateTypeDef    LPM_State;   /*!< LPM State                          */
-  uint32_t                BESL;
+    PCD_TypeDef             *Instance;   /*!< Register base address              */
+    PCD_InitTypeDef         Init;        /*!< PCD required parameters            */
+    __IO uint8_t            USB_Address; /*!< USB Address                        */
+    PCD_EPTypeDef           IN_ep[16];   /*!< IN endpoint parameters             */
+    PCD_EPTypeDef           OUT_ep[16];  /*!< OUT endpoint parameters            */
+    HAL_LockTypeDef         Lock;        /*!< PCD peripheral status              */
+    __IO PCD_StateTypeDef   State;       /*!< PCD communication state            */
+    uint32_t                Setup[12];   /*!< Setup packet buffer                */
+    PCD_LPM_StateTypeDef    LPM_State;   /*!< LPM State                          */
+    uint32_t                BESL;
 
-  uint32_t lpm_active;                 /*!< Enable or disable the Link Power Management .
+    uint32_t lpm_active;                 /*!< Enable or disable the Link Power Management .
                                        This parameter can be set to ENABLE or DISABLE                      */
-  void                    *pData;      /*!< Pointer to upper stack Handler */
+    void                    *pData;      /*!< Pointer to upper stack Handler */
 } PCD_HandleTypeDef;
 
 /**
@@ -145,10 +145,10 @@ typedef struct
   * @{
   */
 #ifndef USBD_HS_TRDT_VALUE
- #define USBD_HS_TRDT_VALUE           9U
+#define USBD_HS_TRDT_VALUE           9U
 #endif /* USBD_HS_TRDT_VALUE */
 #ifndef USBD_FS_TRDT_VALUE
- #define USBD_FS_TRDT_VALUE           5U
+#define USBD_FS_TRDT_VALUE           5U
 #endif /* USBD_HS_TRDT_VALUE */
 /**
   * @}
