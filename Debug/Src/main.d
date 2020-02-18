@@ -186,4 +186,4 @@ Src / main.o: ..  / Src / main.c C
      / Sciebo / THK / SMMD
     / Projekt / hall / Inc / Display / plot_signal.h : C:
      / Sciebo / THK / SMMD / Projekt / hall / Inc / FFT / fft.h : C:
-     / Sciebo / THK / SMMD / Projekt / hall / Inc / Audio / audio.h : 
+     / Sciebo / THK / SMMD / Projekt / hall / Inc / Audio / audio.h :

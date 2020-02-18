@@ -218,4 +218,4 @@ Drivers / STM32F7xx_HAL_Driver / Src / stm32f7xx_ll_fmc.o : \ ..  / Drivers / ST
      / Sciebo / THK / SMMD / Projekt / Workspace
     / DMA_Display / Drivers / STM32F7xx_HAL_Driver / Inc / stm32f7xx_hal_dfsdm.h : C:
      / Sciebo / THK / SMMD / Projekt / Workspace / DMA_Display / Drivers / STM32F7xx_HAL_Driver / Inc / stm32f7xx_hal_dsi
-    .h : 
+    .h :

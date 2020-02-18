@@ -248,4 +248,4 @@ Src / Audio / audio.o: ..  / Src / Audio / audio.c \ C
      / Sciebo / THK / SMMD / Projekt
     / Workspace / DMA_Display / Drivers / STM32F7xx_HAL_Driver / Inc / stm32f7xx_hal_def.h : C:
      / Sciebo / THK / SMMD / Projekt / Workspace / DMA_Display / Drivers / CMSIS / Include / arm_math.h : C:
-     / Sciebo / THK / SMMD / Projekt / Workspace / DMA_Display / Inc / Audio / audio.h : 
+     / Sciebo / THK / SMMD / Projekt / Workspace / DMA_Display / Inc / Audio / audio.h :
