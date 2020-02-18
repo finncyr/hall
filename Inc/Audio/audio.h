@@ -48,9 +48,11 @@ short prbs(void);
 // Defined the size of the input and output buffers for audio DMA
 //#define BUFFER_SIZE 128
 //#define BUFFER_SIZE 256
-#define BUFFER_SIZE 512
+//#define BUFFER_SIZE 512
 //#define BUFFER_SIZE 1024
-//#define BUFFER_SIZE 4096
+#define BUFFER_SIZE 4096
+//#define BUFFER_SIZE 8192
+//#define BUFFER_SIZE 16384
 
 #define __D ((BUFFER_SIZE / 2)*2)
 #if __D == BUFFER_SIZE
