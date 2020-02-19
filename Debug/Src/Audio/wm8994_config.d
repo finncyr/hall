@@ -181,4 +181,4 @@ Src / Audio / wm8994_config.o: ..  / Src / Audio / wm8994_config.c \ C
      / Users / ManuelFaatz / Downloads / DMA_Display / Drivers
     / STM32F7xx_HAL_Driver / Inc / stm32f7xx_hal_def.h : C:
      / Users / ManuelFaatz
-    / Downloads / DMA_Display / Inc / Audio / wm8994_RegisterDefines.h : 
+    / Downloads / DMA_Display / Inc / Audio / wm8994_RegisterDefines.h :

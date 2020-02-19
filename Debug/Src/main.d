@@ -205,4 +205,4 @@ Src / main.o: ..  / Src / main.c \ C
     / Inc / Display / plot_signal.h : C:
      / Users / ManuelFaatz / Downloads
     / DMA_Display / Inc / FFT / fft.h : C:
-     / Users / ManuelFaatz / Downloads / DMA_Display / Inc / Audio / audio.h : 
+     / Users / ManuelFaatz / Downloads / DMA_Display / Inc / Audio / audio.h :

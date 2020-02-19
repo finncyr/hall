@@ -153,4 +153,4 @@ Drivers / STM32F7xx_HAL_Driver / Src / stm32f7xx_hal_rcc_ex.o
      / Users / ManuelFaatz / Downloads / DMA_Display / Drivers
     / STM32F7xx_HAL_Driver / Inc / stm32f7xx_hal_dfsdm.h : C:
      / Users / ManuelFaatz
-    / Downloads / DMA_Display / Drivers / STM32F7xx_HAL_Driver / Inc / stm32f7xx_hal_dsi.h : 
+    / Downloads / DMA_Display / Drivers / STM32F7xx_HAL_Driver / Inc / stm32f7xx_hal_dsi.h :

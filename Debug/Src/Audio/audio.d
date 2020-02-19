@@ -180,4 +180,4 @@ Src / Audio / audio.o: ..  / Src / Audio / audio.c \ C
     / STM32F7xx_HAL_Driver / Inc / stm32f7xx_hal_def.h : C:
      / Users / ManuelFaatz / Downloads
     / DMA_Display / Drivers / CMSIS / Include / arm_math.h : C:
-     / Users / ManuelFaatz / Downloads / DMA_Display / Inc / Audio / audio.h : 
+     / Users / ManuelFaatz / Downloads / DMA_Display / Inc / Audio / audio.h :
