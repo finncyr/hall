@@ -1,3 +1,11 @@
+/**
+ *****************************************************************************
+ * @file    touch_button.c
+ * @brief   Plots a usable touch button on the display of the stm32f769i_discovery board
+ * @author  Finn Cyriax
+ ******************************************************************************
+ *
+ */
 #include "touch_button.h"
 
 // define margins for display in pixels
@@ -15,7 +23,6 @@ uint16_t display_max_x,
 Circle_LCD button1;
 
 uint8_t tsIsPressed;
-uint8_t tsState;
 
 void init_touch_button(){
     tsIsPressed = 0;
@@ -55,7 +62,7 @@ void touch_update(){
     }
 }
 
-void display_button(){
+void draw_button1(){
 
     BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
     BSP_LCD_FillRect(display_left_margin,display_top_margin, display_max_x, display_max_y);
