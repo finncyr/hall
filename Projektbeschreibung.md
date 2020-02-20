@@ -27,13 +27,4 @@ The final project software should contain the following features:
 
 The application should be executable as a stand-alone solution for the STM32 Dev Kit.
 
-## Time Management
-
-[Link to online Geantt Chart](https://backend.agantty.com/sharing/4ddee50efb45fa526534cae309aeaf73)
-
-The live updated time schedule is provided under the link above.
-**All steps shown in the Geantt Chart have a description with further details on exact execution!**
-
-[![Zeitplan](https://raw.githubusercontent.com/finncyr/hall/master/Zeitplan.png)](https://backend.agantty.com/sharing/4ddee50efb45fa526534cae309aeaf73)
-
 *Last Updated: 07.01.2020*
