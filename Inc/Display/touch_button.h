@@ -1,7 +1,8 @@
 /**
  *****************************************************************************
  * @file    touch_button.h
- * @brief   Plots a usable touch button on the display of the stm32f769i_discovery board
+ * @brief   Plots a usable touch button on the display of the
+ *stm32f769i_discovery board
  * @author  Finn Cyriax
  ******************************************************************************
  *
@@ -19,11 +20,10 @@
  *
  */
 typedef struct Circle_LCD_info {
-    uint16_t xPos;
-    uint16_t yPos;
-    uint16_t radius;
+  uint16_t xPos;
+  uint16_t yPos;
+  uint16_t radius;
 } Circle_LCD;
-
 
 /**
  * @brief Initialize the Display and TS
@@ -38,10 +38,10 @@ void init_touch_button();
 void touch_update();
 
 /**
- * @brief Draws a button to click on TS with changing colors based on touch_update()
+ * @brief Draws a button to click on TS with changing colors based on
+ * touch_update()
  *
  */
 void display_button();
-
 
 #endif
