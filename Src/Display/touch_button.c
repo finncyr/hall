@@ -17,14 +17,14 @@ static uint16_t display_left_margin =  0;
 const char *header = "hall";
 const char *buttontext = "Reverb";
 
-uint16_t display_max_x, 
+uint16_t display_max_x,
          display_max_y;
 
 Circle_LCD button1;
 
 uint8_t tsIsPressed;
 
-void init_touch_button(){
+void init_touch_button() {
     tsIsPressed = 0;
     tsState = 0;
 
@@ -42,27 +42,27 @@ void init_touch_button(){
     button1.yPos = (BSP_LCD_GetYSize() / 2) - button1.radius;
 }
 
-void touch_update(){
+void touch_update() {
     TS_StateTypeDef ts;
     BSP_TS_GetState(&ts);
 
     // discard any changes outside display borders
-    if( (ts.touchX[0] >= BSP_LCD_GetXSize()) || (ts.touchY[0] >= BSP_LCD_GetYSize()) ){
+    if( (ts.touchX[0] >= BSP_LCD_GetXSize()) || (ts.touchY[0] >= BSP_LCD_GetYSize()) ) {
         ts.touchX[0] = 0;
         ts.touchY[0] = 0;
         ts.touchDetected = 0;
     }
     //detect touch inputs
-    if(ts.touchDetected){
+    if(ts.touchDetected) {
         //detect if input is in borders of 2D-Rect around button1
         if( ts.touchX >= button1.xPos && ts.touchX <= button1.xPos + 2*button1.radius &&
-            ts.touchY >= button1.yPos && ts.touchY <= button1.yPos + 2*button1.radius){
-                tsIsPressed = (tsIsPressed) ? 0 : 1;
-            }
+                ts.touchY >= button1.yPos && ts.touchY <= button1.yPos + 2*button1.radius) {
+            tsIsPressed = (tsIsPressed) ? 0 : 1;
+        }
     }
 }
 
-void draw_button1(){
+void draw_button1() {
 
     BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
     BSP_LCD_FillRect(display_left_margin,display_top_margin, display_max_x, display_max_y);
@@ -71,13 +71,13 @@ void draw_button1(){
     BSP_LCD_SetFont(&Font16);
     BSP_LCD_DisplayStringAt(0, 8, (uint8_t *)header, CENTER_MODE);
 
-    if(tsIsPressed){
+    if(tsIsPressed) {
         BSP_LCD_SetTextColor(LCD_COLOR_LIGHTGREEN);
     }
-    else{
+    else {
         BSP_LCD_SetTextColor(LCD_COLOR_LIGHTGRAY);
     }
-    
+
     BSP_LCD_DrawCircle(button1.xPos, button1.yPos, button1.radius);
 
     BSP_LCD_SetTextColor(LCD_COLOR_BLACK);

@@ -21,8 +21,8 @@
 typedef struct Circle_LCD_info {
     uint16_t xPos;
     uint16_t yPos;
-    uint16_t radius; 
-}Circle_LCD;
+    uint16_t radius;
+} Circle_LCD;
 
 
 /**
