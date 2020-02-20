@@ -3,6 +3,10 @@
 *Project for SMMD in WS 19/20*
 *Participants: Finn Cyriax, Manuel Faatz*
 
+![](https://img.shields.io/github/contributors/finncyr/hall?color=blue)
+![](https://img.shields.io/github/license/finncyr/hall)
+![](https://img.shields.io/github/last-commit/finncyr/hall)
+
 ## Description of Project
 
 This project is aimed at creating a device that can alter an audio signal provided by a microphone using an reverb effect. Should the team have the time, additional effects will be implemented. 
