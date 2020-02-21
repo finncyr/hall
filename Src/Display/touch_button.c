@@ -7,7 +7,7 @@
  ******************************************************************************
  *
  */
-#include "touch_button.h"
+#include "Display/touch_button.h"
 
 // define margins for display in pixels
 static uint16_t display_bottom_margin = 30;
@@ -26,7 +26,6 @@ uint8_t tsIsPressed;
 
 void init_touch_button() {
   tsIsPressed = 0;
-  tsState = 0;
 
   BSP_LCD_Init();
   BSP_LCD_LayerDefaultInit(0, LCD_FB_START_ADDRESS);
@@ -57,10 +56,10 @@ void touch_update() {
   // detect touch inputs
   if (ts.touchDetected) {
     // detect if input is in borders of 2D-Rect around button1
-    if (ts.touchX >= button1.xPos &&
-        ts.touchX <= button1.xPos + 2 * button1.radius &&
-        ts.touchY >= button1.yPos &&
-        ts.touchY <= button1.yPos + 2 * button1.radius) {
+    if (ts.touchX[0] >= button1.xPos &&
+        ts.touchX[0] <= button1.xPos + 2 * button1.radius &&
+        ts.touchY[0] >= button1.yPos &&
+        ts.touchY[0] <= button1.yPos + 2 * button1.radius) {
       tsIsPressed = (tsIsPressed) ? 0 : 1;
     }
   }
