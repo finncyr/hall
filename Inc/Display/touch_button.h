@@ -42,6 +42,6 @@ void touch_update();
  * touch_update()
  *
  */
-void display_button();
+void draw_button1();
 
 #endif
