@@ -36,6 +36,7 @@ The following chapters shall desrcibe how these requirements were met by first d
   * [Software](#software)
     + [Development](#development)
     + [Final results](#final-results)
+    + [User Interface](#user-interface)
   * [Summary](#summary)
   * [Appendix](#appendix)
   * [Quotations](#quotations)
@@ -105,8 +106,14 @@ void ProcessBuffer()
 
 ```
 The process buffer fuction is called everytime one of the input buffers finished being filled. As left and right channel samples are stored in an alternating pattern in the buffer they forst have to be seperated in the first for loop. The second for loop then casts the samples to float32_t in order to make them compatible with the filter function. The filter is then initialised using the length of the audio channel buffers (numTaps), the state of the last filter execution (pState, global variable) and the filter impulse response (h, stored in the filter header file). After initialisation, the filter is then applied to the left audio channel. The right channel is untouched in order to provide a comparison signal. After processing, the audio channel samples are written alternating to the output buffer. 
-<!-- todo:user IO
--->
+
+### User Interface
+
+Our user interface is currently based on the Touch-Panel of the STM32. We implemented a simple LCD routine which draws a round button in the middle of the screen which can be activated by pressing it. If the button is pressed, the color shifts to green instead of the standarized gray.
+The detection of the touch input gets stored in a flip-flop variable which is available globally. To use this variable in our Audio ISR we had to map the Variable ```copy_tsIsPressed``` onto the adress of the global variable. 
+
+We already detected a problem with the system: multiple touch recognition.
+If you leave your finger pressed on the touch screen and move it a few pixels on the screen, the software detects these movements as new touch inputs and activates the button again. The solution would be a "difference function" which checks if the newly detected input is really a new touch input or just a movement of the existing input by a few pixels. We might not be able to implement this function by the deadline of our project, because we focus on readability and proper comments right now.
 
 ---
 
