@@ -272,7 +272,6 @@ int main(void)
 	        }
 	        else if (display_button){
 	        	touch_update();
-	        	draw_button1();
 	        }
 	        else
 	        {

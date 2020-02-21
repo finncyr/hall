@@ -37,9 +37,11 @@ void init_touch_button() {
   display_max_y =
       BSP_LCD_GetYSize() - display_bottom_margin - display_top_margin;
 
-  button1.radius = 50;
-  button1.xPos = (BSP_LCD_GetXSize() / 2) - button1.radius;
-  button1.yPos = (BSP_LCD_GetYSize() / 2) - button1.radius;
+  button1.radius = 100;
+  button1.xPos = (BSP_LCD_GetXSize() / 2);
+  button1.yPos = (BSP_LCD_GetYSize() / 2);
+
+  draw_button1();
 }
 
 void touch_update() {
@@ -56,12 +58,13 @@ void touch_update() {
   // detect touch inputs
   if (ts.touchDetected) {
     // detect if input is in borders of 2D-Rect around button1
-    if (ts.touchX[0] >= button1.xPos &&
-        ts.touchX[0] <= button1.xPos + 2 * button1.radius &&
-        ts.touchY[0] >= button1.yPos &&
-        ts.touchY[0] <= button1.yPos + 2 * button1.radius) {
+    if (ts.touchX[0] >= button1.xPos - button1.radius &&
+        ts.touchX[0] <= button1.xPos + button1.radius &&
+        ts.touchY[0] >= button1.yPos - button1.radius &&
+        ts.touchY[0] <= button1.yPos + button1.radius) {
       tsIsPressed = (tsIsPressed) ? 0 : 1;
     }
+    draw_button1();
   }
 }
 
@@ -81,10 +84,10 @@ void draw_button1() {
     BSP_LCD_SetTextColor(LCD_COLOR_LIGHTGRAY);
   }
 
-  BSP_LCD_DrawCircle(button1.xPos, button1.yPos, button1.radius);
+  BSP_LCD_FillCircle(button1.xPos, button1.yPos, button1.radius);
 
   BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
   BSP_LCD_SetFont(&Font16);
-  BSP_LCD_DisplayStringAt(BSP_LCD_GetXSize() / 2, BSP_LCD_GetYSize() / 2,
-                          (uint8_t *)buttontext, CENTER_MODE);
+  BSP_LCD_DisplayStringAt(BSP_LCD_GetXSize() / 2 - button1.radius/2, BSP_LCD_GetYSize() / 2,
+                          (uint8_t *)buttontext, LEFT_MODE);
 }
