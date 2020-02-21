@@ -236,7 +236,7 @@ int main(void)
   //Init_Plot_Signal();
   Init_FFT();
   init_touch_button(&tsIsPressed);
-	Init();
+	Init(&tsIsPressed);
 
   /* USER CODE END 2 */
 
