@@ -46,6 +46,8 @@ void init_touch_button(uint8_t *tsIsPressed) {
 void touch_update(uint8_t *tsIsPressed) {
   TS_StateTypeDef ts;
   BSP_TS_GetState(&ts);
+  static TS_Static TS_lastinput = {0,0,0};
+  uint16_t xdiff, ydiff;
 
   // discard any changes outside display borders
   if ((ts.touchX[0] >= BSP_LCD_GetXSize()) ||
@@ -54,16 +56,29 @@ void touch_update(uint8_t *tsIsPressed) {
     ts.touchY[0] = 0;
     ts.touchDetected = 0;
   }
-  // detect touch inputs
-  if (ts.touchDetected) {
-    // detect if input is in borders of 2D-Rect around button1
-    if (ts.touchX[0] >= button1.xPos - button1.radius &&
-        ts.touchX[0] <= button1.xPos + button1.radius &&
-        ts.touchY[0] >= button1.yPos - button1.radius &&
-        ts.touchY[0] <= button1.yPos + button1.radius) {
-      *tsIsPressed = (*tsIsPressed) ? 0 : 1;
-    }
-    draw_button1(tsIsPressed);
+  // calculate diffences between last inputs coordinates
+  xdiff = (TS_lastinput.xPos > ts.touchX[0]) ? (TS_lastinput.xPos - ts.touchX[0]) : (ts.touchX[0] - TS_lastinput.xPos);
+  ydiff = (TS_lastinput.yPos > ts.touchY[0]) ? (TS_lastinput.yPos - ts.touchY[0]) : (ts.touchY[0] - TS_lastinput.yPos);
+
+  if (TS_lastinput.touchDetected != ts.touchDetected || 
+      (xdiff > 10) || (ydiff > 10))
+  {
+
+    TS_lastinput.touchDetected = ts.touchDetected;
+
+      if (ts.touchDetected) {
+        TS_lastinput.xPos = ts.touchX[0];
+        TS_lastinput.yPos = ts.touchY[0];
+
+        // detect if input is in borders of 2D-Rect around button1
+        if (ts.touchX[0] >= button1.xPos - button1.radius &&
+            ts.touchX[0] <= button1.xPos + button1.radius &&
+            ts.touchY[0] >= button1.yPos - button1.radius &&
+            ts.touchY[0] <= button1.yPos + button1.radius) {
+          *tsIsPressed = (*tsIsPressed) ? 0 : 1;
+        }
+        draw_button1(tsIsPressed);
+      }
   }
 }
 
