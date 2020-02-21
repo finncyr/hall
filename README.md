@@ -1,33 +1,34 @@
 # hall
-Project to implement an echo effect. Done in 2k19 under the course of SMMD @ TH Cologne
+------
+*Project for SMMD in WS 19/20*
+*Participants: Finn Cyriax, Manuel Faatz*
 
 ![](https://img.shields.io/github/contributors/finncyr/hall?color=blue)
 ![](https://img.shields.io/github/license/finncyr/hall)
 ![](https://img.shields.io/github/last-commit/finncyr/hall)
 
-*Current development of reverb in ./Src/LAB/LAB1/reverb_intr.c*
+## Description of Project
 
-## Deadlines
+This project is aimed at creating a device that can alter an audio signal provided by a microphone using an reverb effect. Should the team have the time, additional effects will be implemented. 
+The project will be implemented using the STM32 development platform provided by our professors. The audio signal will be obtained from the microphone using the audio codec integrated into the development board. The audio data will be transported from the codec to the SoC using DMA in a ping/pong configuration.
+In order to enable using the last few bits of the ping buffer as inputs for the pong buffer processing (and vice versa), they will have to be copied to the beginning of the pong buffer (and vice versa).
+The audio signal will then be processed by the SoC using FIR/IIR filters to realize the desired audio effects.
 
-Base Project Presentation - 8 Jan 2k20
-Checkpoint Presentaition  - 5 Feb 2k20
-Final Presentation        - TBA
+After processing the audio signal is returned to the CODEC using DMA in ping/pong configuration as well. The overlap creating by copying the end of one input buffer to the beginning of the next will have to be accounted for. 
+Since user IO is not time sensitive it will not be handled when the CPU has cycles to spare. This will be used by handling IO in the main loop, since it only executes when there are no ISRs running. To save more cycles a simple polling could be implemented that prevents the IO functions from executing too often when the CPU is not handling interrupts. 
 
-Grade: 35% Project Execution ; 35% Final Documents ; 30% Final Presentation
+## Goals
 
-### Base Project Plan (BPP)
+The final project software should contain the following features:
 
-- Title
-- short Description
-- destination / goals for final product
-- checkpoints
-- time est z.B. GANTT Chart
+- IO to change effects whilst running
+- Various Effects:
+  - Echo
+  - Delay
+  - Reverb
+- Mute Button
+- Audio Passthrough
 
-### Checkpoint Presentation
+The application should be executable as a stand-alone solution for the STM32 Dev Kit.
 
-- Progress
-- ToDo
-
-### Final Presentation
-
-- functional demonstration (est. 10 min)
+*Last Updated: 07.01.2020*
