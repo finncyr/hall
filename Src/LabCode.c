@@ -31,60 +31,60 @@ volatile uint8_t *copy_tsIsPressed;
 
 void ProcessBuffer()
 {
-	//seperate samples
-	seperated_buf_index = 0;
-	for (int n = 0; n < BUFFER_SIZE; n+=2)
-	 {
-		audio_chL[seperated_buf_index]= ProcessingBuffer.Input[n];
-	    audio_chR[seperated_buf_index]= ProcessingBuffer.Input[n+1];
-	    seperated_buf_index ++;
-	 }
+    //seperate samples
+    seperated_buf_index = 0;
+    for (int n = 0; n < BUFFER_SIZE; n+=2)
+    {
+        audio_chL[seperated_buf_index]= ProcessingBuffer.Input[n];
+        audio_chR[seperated_buf_index]= ProcessingBuffer.Input[n+1];
+        seperated_buf_index ++;
+    }
 
-	for(int i = 0; i<BUFFER_SIZE/2;i++){
-		audio_chL_f[i] = (float32_t)audio_chL[i];
-		//audio_chL[i] = (int32_t)audio_chL[i];
-	}
+    for(int i = 0; i<BUFFER_SIZE/2; i++) {
+        audio_chL_f[i] = (float32_t)audio_chL[i];
+        //audio_chL[i] = (int32_t)audio_chL[i];
+    }
 
-	if (*copy_tsIsPressed) {
-		arm_fir_instance_f32 S = { numTaps, pState, h };
+    if (*copy_tsIsPressed) {
+        arm_fir_instance_f32 S = { numTaps, pState, h };
 
-		arm_fir_f32(&S, audio_chL_f, conv_resL, BUFFER_SIZE / 2);
+        arm_fir_f32(&S, audio_chL_f, conv_resL, BUFFER_SIZE / 2);
 
-		//reassemble buffer
-		seperated_buf_index = 0;
-		for (int n = 0; n < BUFFER_SIZE; n += 2) {
-			ProcessingBuffer.Output[n] = (int32_t) (0.28
-					* conv_resL[seperated_buf_index]);
-			ProcessingBuffer.Output[n + 1] = audio_chR[seperated_buf_index];
-			seperated_buf_index++;
-		}
+        //reassemble buffer
+        seperated_buf_index = 0;
+        for (int n = 0; n < BUFFER_SIZE; n += 2) {
+            ProcessingBuffer.Output[n] = (int32_t) (0.28
+                                                    * conv_resL[seperated_buf_index]);
+            ProcessingBuffer.Output[n + 1] = audio_chR[seperated_buf_index];
+            seperated_buf_index++;
+        }
 
-	} else {
-		//reassemble buffer
-		seperated_buf_index = 0;
-		for (int n = 0; n < BUFFER_SIZE; n += 2) {
-			ProcessingBuffer.Output[n] = audio_chL[seperated_buf_index];
-			ProcessingBuffer.Output[n + 1] = audio_chR[seperated_buf_index];
-			seperated_buf_index++;
-		}
+    } else {
+        //reassemble buffer
+        seperated_buf_index = 0;
+        for (int n = 0; n < BUFFER_SIZE; n += 2) {
+            ProcessingBuffer.Output[n] = audio_chL[seperated_buf_index];
+            ProcessingBuffer.Output[n + 1] = audio_chR[seperated_buf_index];
+            seperated_buf_index++;
+        }
 
-	}
+    }
 
-  if (processing_data == false)
-  {
-    Copy_To_FFT_Buffer(ProcessingBuffer.Input);
-    data_available = true;
-  }
-  // circularly increment interrupt counter
-  if (++interrupt_counter == CM)
-  {
-    interrupt_counter = 0;
-  }
-  cycles_btwn_irs[interrupt_counter] = 0;
+    if (processing_data == false)
+    {
+        Copy_To_FFT_Buffer(ProcessingBuffer.Input);
+        data_available = true;
+    }
+    // circularly increment interrupt counter
+    if (++interrupt_counter == CM)
+    {
+        interrupt_counter = 0;
+    }
+    cycles_btwn_irs[interrupt_counter] = 0;
 }
 
 void Init(uint8_t *tsIsPressed)
-{//48kHz -> FS auch aendern
+{   //48kHz -> FS auch aendern
     AudioInitDMA(hz48000, line_in, ProcessBuffer, ProcessBuffer);
     //arm_cfft_instance_conv = &arm_cfft_sR_f32_len4096;
     pState = (float32_t *) calloc(numTaps+ BUFFER_SIZE/2-1, sizeof(float32_t));
@@ -96,13 +96,13 @@ uint32_t cycles_btwn_irs[CM] = {0};
 uint16_t interrupt_counter = 0; //counter for the interrupts
 
 
-void combFilter(uint32_t *samples, uint32_t *output, int samplesLength, int delayInMilliSec, float32_t decayFactor, int sampleRate){
+void combFilter(uint32_t *samples, uint32_t *output, int samplesLength, int delayInMilliSec, float32_t decayFactor, int sampleRate) {
 
     int delayOfSamples = delayInMilliSec * (sampleRate/1000);
 
-	for(int i = 0; i < samplesLength; i++) output[i] = samples[i];
+    for(int i = 0; i < samplesLength; i++) output[i] = samples[i];
 
-    for (int i = 0; i < samplesLength - delayOfSamples; i++){
+    for (int i = 0; i < samplesLength - delayOfSamples; i++) {
         output[i+delayOfSamples] = (uint32_t)(output[i] * decayFactor);
     }
 }
