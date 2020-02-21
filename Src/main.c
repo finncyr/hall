@@ -47,6 +47,7 @@
 #include "arm_const_structs.h"
 #include "LabCode.h"
 #include "Display/plot_signal.h"
+#include "Display/touch_button.h"
 #include "FFT/fft.h"
 
 /* USER CODE END Includes */
@@ -119,9 +120,12 @@ uint8_t cec_receive_buffer[16];
 bool display_on = true;
 //bool display_on = false;
 // select whether to display FFT (true) or time signals (false)
-bool display_fft = true;
+bool display_fft = false;
+bool display_button = true;
 //bool display_fft = false;
 uint32_t frame_counter = 0;
+
+volatile uint8_t *tsIsPressed = 0;
 
 /* USER CODE END PV */
 
@@ -187,7 +191,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+  BSP_TS_Init(800,480);
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -229,9 +233,10 @@ int main(void)
   /* Initialize interrupts */
   MX_NVIC_Init();
   /* USER CODE BEGIN 2 */
-  Init_Plot_Signal();
+  //Init_Plot_Signal();
   Init_FFT();
-	Init();
+  init_touch_button(&tsIsPressed);
+	Init(&tsIsPressed);
 
   /* USER CODE END 2 */
 
@@ -266,6 +271,9 @@ int main(void)
             Display_FFT2();
             // Treat complex-valued FFT as FFT of one signal and display magnitude
             //Display_FFT();
+	        }
+	        else if (display_button){
+	        	touch_update(&tsIsPressed);
 	        }
 	        else
 	        {

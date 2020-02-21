@@ -43,6 +43,7 @@
 "Src/Audio/audio.o"
 "Src/Audio/wm8994_config.o"
 "Src/Display/plot_signal.o"
+"Src/Display/touch_button.o"
 "Src/FFT/fft.o"
 "Src/FFT/fft_arm.o"
 "Src/FFT/loop_dma.o"

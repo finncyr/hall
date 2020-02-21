@@ -63,6 +63,11 @@ Src/main.o: ../Src/main.c C:/Sciebo/THK/SMMD/Projekt/hall/Inc/main.h \
  C:/Sciebo/THK/SMMD/Projekt/hall/Inc/LabCode.h \
  C:/Sciebo/THK/SMMD/Projekt/hall/Inc/Audio/wm8994_config.h \
  C:/Sciebo/THK/SMMD/Projekt/hall/Inc/Display/plot_signal.h \
+ C:/Sciebo/THK/SMMD/Projekt/hall/Inc/Display/touch_button.h \
+ C:/Sciebo/THK/SMMD/Projekt/hall/Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_ts.h \
+ C:/Sciebo/THK/SMMD/Projekt/hall/Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_lcd.h \
+ c:\sciebo\thk\smmd\projekt\hall\drivers\bsp\components\ft6x06.h \
+ c:\sciebo\thk\smmd\projekt\hall\drivers\bsp\components\ts.h \
  C:/Sciebo/THK/SMMD/Projekt/hall/Inc/FFT/fft.h \
  C:/Sciebo/THK/SMMD/Projekt/hall/Inc/Audio/audio.h
 
@@ -195,6 +200,16 @@ C:/Sciebo/THK/SMMD/Projekt/hall/Inc/LabCode.h:
 C:/Sciebo/THK/SMMD/Projekt/hall/Inc/Audio/wm8994_config.h:
 
 C:/Sciebo/THK/SMMD/Projekt/hall/Inc/Display/plot_signal.h:
+
+C:/Sciebo/THK/SMMD/Projekt/hall/Inc/Display/touch_button.h:
+
+C:/Sciebo/THK/SMMD/Projekt/hall/Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_ts.h:
+
+C:/Sciebo/THK/SMMD/Projekt/hall/Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_lcd.h:
+
+c:\sciebo\thk\smmd\projekt\hall\drivers\bsp\components\ft6x06.h:
+
+c:\sciebo\thk\smmd\projekt\hall\drivers\bsp\components\ts.h:
 
 C:/Sciebo/THK/SMMD/Projekt/hall/Inc/FFT/fft.h:
 
