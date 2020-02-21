@@ -125,6 +125,8 @@ bool display_button = true;
 //bool display_fft = false;
 uint32_t frame_counter = 0;
 
+volatile uint8_t *tsIsPressed = 0;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -233,7 +235,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   //Init_Plot_Signal();
   Init_FFT();
-  init_touch_button();
+  init_touch_button(&tsIsPressed);
 	Init();
 
   /* USER CODE END 2 */
@@ -271,7 +273,7 @@ int main(void)
             //Display_FFT();
 	        }
 	        else if (display_button){
-	        	touch_update();
+	        	touch_update(&tsIsPressed);
 	        }
 	        else
 	        {

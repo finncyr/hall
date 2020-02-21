@@ -22,9 +22,8 @@ uint16_t display_max_x, display_max_y;
 
 Circle_LCD button1;
 
-uint8_t tsIsPressed;
 
-void init_touch_button() {
+void init_touch_button(uint8_t *tsIsPressed) {
   tsIsPressed = 0;
 
   BSP_LCD_Init();
@@ -41,10 +40,10 @@ void init_touch_button() {
   button1.xPos = (BSP_LCD_GetXSize() / 2);
   button1.yPos = (BSP_LCD_GetYSize() / 2);
 
-  draw_button1();
+  draw_button1(&tsIsPressed);
 }
 
-void touch_update() {
+void touch_update(uint8_t *tsIsPressed) {
   TS_StateTypeDef ts;
   BSP_TS_GetState(&ts);
 
@@ -62,13 +61,13 @@ void touch_update() {
         ts.touchX[0] <= button1.xPos + button1.radius &&
         ts.touchY[0] >= button1.yPos - button1.radius &&
         ts.touchY[0] <= button1.yPos + button1.radius) {
-      tsIsPressed = (tsIsPressed) ? 0 : 1;
+      *tsIsPressed = (*tsIsPressed) ? 0 : 1;
     }
-    draw_button1();
+    draw_button1(tsIsPressed);
   }
 }
 
-void draw_button1() {
+void draw_button1(uint8_t *tsIsPressed) {
 
   BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
   BSP_LCD_FillRect(display_left_margin, display_top_margin, display_max_x,
@@ -78,7 +77,7 @@ void draw_button1() {
   BSP_LCD_SetFont(&Font16);
   BSP_LCD_DisplayStringAt(0, 8, (uint8_t *)header, CENTER_MODE);
 
-  if (tsIsPressed) {
+  if (*tsIsPressed) {
     BSP_LCD_SetTextColor(LCD_COLOR_LIGHTGREEN);
   } else {
     BSP_LCD_SetTextColor(LCD_COLOR_LIGHTGRAY);
