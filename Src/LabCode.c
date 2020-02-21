@@ -4,8 +4,8 @@
 #include "STM32F769I-Discovery/stm32f769i_discovery_lcd.h"
 //#include "batCave.h"
 //#include "comb14.h"
-//#include "batcave_256.h"
-#include "batcave_512.h"
+#include "batcave_256.h"
+//#include "batcave_512.h"
 //#include "batcave_1024.h"
 #include "stdlib.h"
 
@@ -17,11 +17,14 @@ int32_t seperated_buf_index;
 int32_t audio_chL[BUFFER_SIZE/2];
 int32_t audio_chR[BUFFER_SIZE/2];
 float32_t conv_resL[BUFFER_SIZE/2+ 37074 -1];
+float32_t conv_resR[BUFFER_SIZE/2+ 37074 -1];
 float32_t audio_chL_f[BUFFER_SIZE/2];
+float32_t audio_chR_f[BUFFER_SIZE/2];
 // define a pointer to an ARM FFT instance
 //arm_cfft_instance_f32* arm_cfft_instance_conv = NULL;
 
-float32_t *pState;
+float32_t *pState_L;
+float32_t *pState_R;
 
 
 void combFilter(uint32_t *samples, uint32_t *output, int samplesLength, int delayInMilliSec, float32_t decayFactor, int sampleRate);
@@ -42,20 +45,23 @@ void ProcessBuffer()
 
 	for(int i = 0; i<BUFFER_SIZE/2;i++){
 		audio_chL_f[i] = (float32_t)audio_chL[i];
-		//audio_chL[i] = (int32_t)audio_chL[i];
+		audio_chR_f[i] = (float32_t)audio_chL[i];
 	}
 
 	if (*copy_tsIsPressed) {
-		arm_fir_instance_f32 S = { numTaps, pState, h };
+		//FIR left
+		arm_fir_instance_f32 S_L = { numTaps, pState_L, h_L};
+		arm_fir_f32(&S_L, audio_chL_f, conv_resL, BUFFER_SIZE / 2);
 
-		arm_fir_f32(&S, audio_chL_f, conv_resL, BUFFER_SIZE / 2);
+		//FIR right
+		arm_fir_instance_f32 S_R = { numTaps, pState_R, h_R};
+		arm_fir_f32(&S_R, audio_chL_f, conv_resR, BUFFER_SIZE / 2);
 
 		//reassemble buffer
 		seperated_buf_index = 0;
 		for (int n = 0; n < BUFFER_SIZE; n += 2) {
-			ProcessingBuffer.Output[n] = (int32_t) (0.28
-					* conv_resL[seperated_buf_index]);
-			ProcessingBuffer.Output[n + 1] = audio_chR[seperated_buf_index];
+			ProcessingBuffer.Output[n] = (int32_t) (0.28* conv_resL[seperated_buf_index]);
+			ProcessingBuffer.Output[n] = (int32_t) (0.28* conv_resR[seperated_buf_index]);
 			seperated_buf_index++;
 		}
 
@@ -87,7 +93,8 @@ void Init(uint8_t *tsIsPressed)
 {//48kHz -> FS auch aendern
     AudioInitDMA(hz48000, line_in, ProcessBuffer, ProcessBuffer);
     //arm_cfft_instance_conv = &arm_cfft_sR_f32_len4096;
-    pState = (float32_t *) calloc(numTaps+ BUFFER_SIZE/2-1, sizeof(float32_t));
+    pState_L = (float32_t *) calloc(numTaps+ BUFFER_SIZE/2-1, sizeof(float32_t));
+    pState_R = (float32_t *) calloc(numTaps+ BUFFER_SIZE/2-1, sizeof(float32_t));
 
     copy_tsIsPressed = tsIsPressed;
 }

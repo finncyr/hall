@@ -65,7 +65,7 @@ Src/LabCode.o: ../Src/LabCode.c \
  C:/Sciebo/THK/SMMD/Projekt/hall/Drivers/BSP/Components/otm8009a.h \
  C:/Sciebo/THK/SMMD/Projekt/hall/Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery.h \
  c:\sciebo\thk\smmd\projekt\hall\utilities\fonts\fonts.h \
- C:/Sciebo/THK/SMMD/Projekt/hall/Inc/batcave_512.h
+ C:/Sciebo/THK/SMMD/Projekt/hall/Inc/batcave_256.h
 
 C:/Sciebo/THK/SMMD/Projekt/hall/Inc/LabCode.h:
 
@@ -199,4 +199,4 @@ C:/Sciebo/THK/SMMD/Projekt/hall/Drivers/BSP/STM32F769I-Discovery/stm32f769i_disc
 
 c:\sciebo\thk\smmd\projekt\hall\utilities\fonts\fonts.h:
 
-C:/Sciebo/THK/SMMD/Projekt/hall/Inc/batcave_512.h:
+C:/Sciebo/THK/SMMD/Projekt/hall/Inc/batcave_256.h:
