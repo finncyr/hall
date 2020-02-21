@@ -199,4 +199,4 @@ Src / main.o: ..  / Src / main.c C
     : c:
     \sciebo \thk \smmd \projekt \hall \drivers \bsp \components \ts.h : C:
      / Sciebo / THK / SMMD / Projekt / hall / Inc / FFT / fft.h : C:
-     / Sciebo / THK / SMMD / Projekt / hall / Inc / Audio / audio.h : 
+     / Sciebo / THK / SMMD / Projekt / hall / Inc / Audio / audio.h :
