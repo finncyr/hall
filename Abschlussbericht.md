@@ -35,8 +35,8 @@ The following chapters shall desrcibe how these requirements were met by first d
   * [Hardware](#hardware)
   * [Software](#software)
     + [Development](#development)
-    + [Final results](#final-results)
     + [User Interface](#user-interface)
+    + [Final results](#final-results)
   * [Summary](#summary)
   * [Appendix](#appendix)
   * [Quotations](#quotations)
@@ -63,12 +63,19 @@ This did save a lot of CPU usage. However, the original plan of using 4 parallel
 
 In order to address this the filter was scaled back to a simple FIR using a optimised filter function [provided by ARM for their processors][arm_fir_f32]. However, even this was not enough to resolve the performance issues. The block size was increased from its default value and the impulse response had to be shortened.
 
+### User Interface
+The user interface is currently based on the Touch-Panel of the STM32. The software implements a simple LCD routine which draws a round button in the middle of the screen which can be activated by pressing it. If the button is pressed, the color shifts to green instead of the standarized gray.
+The detection of the touch input gets stored in a flip-flop variable which is available globally. 
+
+The software already has a problem: multiple touch recognition.
+If you leave your finger pressed on the touch screen and move it a few pixels on the screen, the software detects these movements as new touch inputs and activates the button again. The solution would be a "difference function" which checks if the newly detected input is really a new touch input or just a movement of the existing input by a few pixels. The final version of the Software will include this diffence function.
 
 
 ### Final results
 Consequently, the software in its final form is a DMA based approach. The IO is handled though a ping pong buffer configuration. It uses a FIR filter for processing and is optimised for the processors capabilities. The used filter function stores its state between calls, so no overlap and add routine had to be implemented to handle a continuous effect when switching between buffers. The maximum impulse response length at 48 kHz and a blocksize of 512 turned out to be 512 samples (about 11 microseconds). 
 
 The following code snippet will help illustrate the inner workings of our signal processing:
+
 ```c
 
 void ProcessBuffer()
@@ -106,14 +113,9 @@ void ProcessBuffer()
 
 ```
 The process buffer fuction is called everytime one of the input buffers finished being filled. As left and right channel samples are stored in an alternating pattern in the buffer they forst have to be seperated in the first for loop. The second for loop then casts the samples to float32_t in order to make them compatible with the filter function. The filter is then initialised using the length of the audio channel buffers (numTaps), the state of the last filter execution (pState, global variable) and the filter impulse response (h, stored in the filter header file). After initialisation, the filter is then applied to the left audio channel. The right channel is untouched in order to provide a comparison signal. After processing, the audio channel samples are written alternating to the output buffer. 
+The final function includes more code that supports activating and deactivating the filter. 
+Due to CPU limitations the filter is appplied to the left channel only. Alternatives using a shorter impuse response and stereo processing did not provide the desired sound quality, which forced this compromise. 
 
-### User Interface
-
-The user interface is currently based on the Touch-Panel of the STM32. The software implements a simple LCD routine which draws a round button in the middle of the screen which can be activated by pressing it. If the button is pressed, the color shifts to green instead of the standarized gray.
-The detection of the touch input gets stored in a flip-flop variable which is available globally. 
-
-The software already has a problem: multiple touch recognition.
-If you leave your finger pressed on the touch screen and move it a few pixels on the screen, the software detects these movements as new touch inputs and activates the button again. The solution would be a "difference function" which checks if the newly detected input is really a new touch input or just a movement of the existing input by a few pixels. The final version of the Software will include this diffence function.
 
 ---
 

@@ -1,3 +1,14 @@
+/**
+ *****************************************************************************
+ * @file    batCave_256.h
+ * @brief   provides an impulse response of a cave converted to samples using octave
+ *stm32f769i_discovery board
+ * @author  Manuel Faatz
+ * source: http://www.echothief.com/batcave/
+ ******************************************************************************
+ *
+ */
+
 #define N 256
 static float h[256] = {
     0.00000000f,  -0.00040347f, -0.00021504f, 0.00222780f,  0.00465901f,

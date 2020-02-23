@@ -1,3 +1,16 @@
+/**
+ *****************************************************************************
+ * @file    LabCode.c
+ * @brief   modified ISR to convolve left audiochannel with an impulse response
+ * 			if a button is pressed
+ *stm32f769i_discovery board
+ * @author  Harald Elders Boll
+ *  modified by: Manuel Faatz, Finn Cyriax
+ * source: http://www.echothief.com/batcave/
+ ******************************************************************************
+ *
+ */
+
 #include "LabCode.h"
 #include "Audio/audio.h"
 #include "FFT/fft.h"
@@ -96,13 +109,3 @@ uint32_t cycles_btwn_irs[CM] = {0};
 uint16_t interrupt_counter = 0; //counter for the interrupts
 
 
-void combFilter(uint32_t *samples, uint32_t *output, int samplesLength, int delayInMilliSec, float32_t decayFactor, int sampleRate){
-
-    int delayOfSamples = delayInMilliSec * (sampleRate/1000);
-
-	for(int i = 0; i < samplesLength; i++) output[i] = samples[i];
-
-    for (int i = 0; i < samplesLength - delayOfSamples; i++){
-        output[i+delayOfSamples] = (uint32_t)(output[i] * decayFactor);
-    }
-}
