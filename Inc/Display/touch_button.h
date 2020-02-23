@@ -25,6 +25,11 @@ typedef struct Circle_LCD_info {
   uint16_t radius;
 } Circle_LCD;
 
+/**
+ * @brief Holds the most recent touch input data
+ * @details Datatype for handling the touch inputs
+ *
+ */
 typedef struct TsStatic {
   uint16_t xPos;
   uint16_t yPos;
