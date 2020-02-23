@@ -109,19 +109,19 @@ The process buffer fuction is called everytime one of the input buffers finished
 
 ### User Interface
 
-Our user interface is currently based on the Touch-Panel of the STM32. We implemented a simple LCD routine which draws a round button in the middle of the screen which can be activated by pressing it. If the button is pressed, the color shifts to green instead of the standarized gray.
-The detection of the touch input gets stored in a flip-flop variable which is available globally. To use this variable in our Audio ISR we had to map the Variable ```copy_tsIsPressed``` onto the adress of the global variable. 
+The user interface is currently based on the Touch-Panel of the STM32. The software implements a simple LCD routine which draws a round button in the middle of the screen which can be activated by pressing it. If the button is pressed, the color shifts to green instead of the standarized gray.
+The detection of the touch input gets stored in a flip-flop variable which is available globally. 
 
-We already detected a problem with the system: multiple touch recognition.
-If you leave your finger pressed on the touch screen and move it a few pixels on the screen, the software detects these movements as new touch inputs and activates the button again. The solution would be a "difference function" which checks if the newly detected input is really a new touch input or just a movement of the existing input by a few pixels. We might not be able to implement this function by the deadline of our project, because we focus on readability and proper comments right now.
+The software already has a problem: multiple touch recognition.
+If you leave your finger pressed on the touch screen and move it a few pixels on the screen, the software detects these movements as new touch inputs and activates the button again. The solution would be a "difference function" which checks if the newly detected input is really a new touch input or just a movement of the existing input by a few pixels. The final version of the Software will include this diffence function.
 
 ---
 
 ## Summary
 
 In summary, the project was scaled down a lot during development due to performance constraints of the CPU. The final software is a DMA based FIR filter system.  
-<!-- todo:user IO
--->
+The UI could need some fine tuning in case of the touch sensitivity, but overall it works pretty well.
+
 ---
 
 ## Appendix
@@ -133,6 +133,7 @@ In summary, the project was scaled down a lot during development due to performa
   - codec - encoder/decoder unit
   - SAI - serial audio interface
   - DSI - display serial interface
+  - UI - user interface
 ---
 
 ## Quotations
