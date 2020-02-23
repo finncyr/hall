@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Final Report</title>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+        
+        <style>
+.task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
+</style>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        
+        
+    </head>
+    <body class="vscode-light">
+        <h1 id="final-report">Final Report</h1>
+<h2 id="task">Task</h2>
+<p>Goal of this project was to build an audio effect device based on the  STM32F796I-DISCO development platform. The desired audio effect was a reverb. In order to realize this idea the following requirements had to be met (all non bold requirements are considered optional):</p>
+<ol>
+<li><strong>reading samples from the onboard audio codec</strong></li>
+<li><strong>processing the read samples</strong></li>
+<li><strong>outputting the processed samples via the onboard audio codec</strong></li>
+<li>handling user IO via the included touchscreen</li>
+</ol>
+<h3 id="1-audio-input">1. Audio Input</h3>
+<p>The audio input should handle fetching samples from the onboard audio codec using the HAL. Due to performance constraints, it should do so while ensuring minimal CPU usage.</p>
+<h3 id="2-audio-processing">2. Audio processing</h3>
+<p>Audio processing should create a reverb effect using DSP audio filters. If possible, a schroeder reverb filter setup should be used. For further information on a schroeder reverb please consult this <a href="https://pdfs.semanticscholar.org/48a5/32a015e3cbb863e28b6cca8ad4ca849065b7.pdf">paper</a>. Should time or CPU constraints not allow this implementaion, a FIR filter setup using the impluse response of a reverberating room can be used instead.</p>
+<h3 id="3-audio-output">3. Audio output</h3>
+<p>The audio output should handle outputting samples to the onboard audio codec using the HAL. Due to performance constraints, it should do so while ensuring minimal CPU usage. Additionally possiblie clipping caused by the audio processing should be prevented before outputting.</p>
+<h3 id="4-user-io">4. User IO</h3>
+<p>The user IO should allow the user to enable and disable the reverb effect. Should multiple reverb effects be implemented, the user should be able to enable/disable them individually and combine them. Ideally this IO is to be implemented using the Touchscreen of the STM32F769I. Should time or CPU constraints not allow this implementation, IO is to be handled using the user button of the board.</p>
+<p>The following chapters shall desrcibe how these requirements were met by first discussig the hardware used in the project. Subsequently the process of developing the software will be described. The final state of the software will be explained in the final chapter, after which a summary will sum up the results of the project.</p>
+<hr>
+<h2 id="table-of-contents">Table of contents</h2>
+<ul>
+<li><a href="#task">Task</a>
+<ul>
+<li><a href="#1-audio-input">1. Audio Input</a></li>
+<li><a href="#2-audio-processing">2. Audio processing</a></li>
+<li><a href="#3-audio-output">3. Audio output</a></li>
+</ul>
+</li>
+<li><a href="#table-of-contents">Table of contents</a></li>
+<li><a href="#hardware">Hardware</a></li>
+<li><a href="#software">Software</a>
+<ul>
+<li><a href="#development">Development</a></li>
+<li><a href="#user-interface">User Interface</a></li>
+<li><a href="#final-results">Final results</a></li>
+</ul>
+</li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#appendix">Appendix</a></li>
+<li><a href="#quotations">Quotations</a></li>
+</ul>
+<hr>
+<h2 id="hardware">Hardware</h2>
+<p>The audio effect device is based on the <em>STM32 F769I-Disco</em> development platform. It consists of a STM32F769NIH6 microcontroller and supplementary hardware. A capacative touchscreen can be attached to the board using a DSI connector. Audio IO is handled via a SAI audio codec.</p>
+<hr>
+<h2 id="software">Software</h2>
+<p>Due to growing experience with the hardware and its capabilities and especially its limitations, the architecture of the software has changed a lot during development. This chapter will first discuss the development of the software, and why changes were necessary.</p>
+<h3 id="development">Development</h3>
+<p>The early versions of the software were based on interrupt based audio processing. This meant the software would send an interrupt to the processor every time a sample was available. The processor would then execute an ISR called <code>Sample_Callback()</code>. In this function, the sample would then be placed in a circulary buffer. The buffer was then used to feed the audio filters. The current output sample of the filters would then be written to the audio output. However, this architecture prooved to be problematic in multiple ways.</p>
+<p>First of all,  in order to achieve an acceptable audio quality the sampling rate of the codec was set to 48 kHz. This meant that each call of the ISR only had a theorecical maximum of 21 microseconds to finish its computations, which prooved to be unsuficcient to rum the filters. On top of that in practise the save and load operations performed to handle each interrupt further diminished the theoretical time for each callback.</p>
+<p>In order to lower the amount of interrupts and filter executions, the software architecture was changed to a DMA based approach. This meant the audio codec would write a block of samples into memory before calling the ISR. The ISR, now called <code>ProcessBuffer()</code>, would then process the entire block of samples and output it. In order to ensure a static block of samples during processing, the audio codec would alternate between a so called ping and pong buffer on both the in- and outputs. Each of the alternating callbacks required to realize this structure are called half callbacks.</p>
+<p>This did save a lot of CPU usage. However, the original plan of using 4 parallel combfilters and 2 serial allpass filters afterwards to realiza a schroeder reverb were still too CPU intensive. This resulted in very loud repeating chirping noises at the output.</p>
+<p>In order to address this the filter was scaled back to a simple FIR using a optimised filter function <a href="https://www.keil.com/pack/doc/CMSIS/DSP/html/group__FIR.html#ga0cf008f650a75f5e2cf82d10691b64d9">provided by ARM for their processors</a>. However, even this was not enough to resolve the performance issues. The block size was increased from its default value and the impulse response had to be shortened.</p>
+<h3 id="user-interface">User Interface</h3>
+<p>The user interface is currently based on the Touch-Panel of the STM32. The software implements a simple LCD routine which draws a round button in the middle of the screen which can be activated by pressing it. If the button is pressed, the color shifts to green instead of the standarized gray.
+The detection of the touch input gets stored in a flip-flop variable which is available globally.</p>
+<p>The software already has a problem: multiple touch recognition.
+If you leave your finger pressed on the touch screen and move it a few pixels on the screen, the software detects these movements as new touch inputs and activates the button again. The solution would be a &quot;difference function&quot; which checks if the newly detected input is really a new touch input or just a movement of the existing input by a few pixels. The final version of the Software will include this diffence function.</p>
+<h3 id="final-results">Final results</h3>
+<p>Consequently, the software in its final form is a DMA based approach. The IO is handled though a ping pong buffer configuration. It uses a FIR filter for processing and is optimised for the processors capabilities. The used filter function stores its state between calls, so no overlap and add routine had to be implemented to handle a continuous effect when switching between buffers. The maximum impulse response length at 48 kHz and a blocksize of 512 turned out to be 512 samples (about 11 microseconds).</p>
+<p>The following code snippet will help illustrate the inner workings of our signal processing:</p>
+<pre><code class="language-c"><div>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">ProcessBuffer</span><span class="hljs-params">()</span>
+</span>{
+	<span class="hljs-comment">//seperate samples</span>
+	seperated_buf_index = <span class="hljs-number">0</span>;
+	<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> n = <span class="hljs-number">0</span>; n &lt; BUFFER_SIZE; n+=<span class="hljs-number">2</span>)
+	 {
+		audio_chL[seperated_buf_index]= ProcessingBuffer.Input[n];
+	    audio_chR[seperated_buf_index]= ProcessingBuffer.Input[n+<span class="hljs-number">1</span>];
+	    seperated_buf_index ++;
+	 }
+
+    <span class="hljs-comment">//cast input to float</span>
+	<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i&lt;BUFFER_SIZE/<span class="hljs-number">2</span>;i++){
+		audio_chL_f[i] = (<span class="hljs-keyword">float32_t</span>)audio_chL[i];
+	}
+
+    <span class="hljs-comment">//initialise filter</span>
+	arm_fir_instance_f32 S = {numTaps, pState, h};
+    <span class="hljs-comment">//filter input</span>
+	arm_fir_f32 (&amp;S, audio_chL_f, conv_resL,BUFFER_SIZE/<span class="hljs-number">2</span>);
+
+
+	<span class="hljs-comment">//reassemble buffer</span>
+	 seperated_buf_index = <span class="hljs-number">0</span>;
+	 <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> n = <span class="hljs-number">0</span>; n &lt; BUFFER_SIZE; n+=<span class="hljs-number">2</span>)
+	 {
+		 ProcessingBuffer.Output[n] = (<span class="hljs-keyword">int32_t</span>) (<span class="hljs-number">0.28</span>*conv_resL[seperated_buf_index]);
+		 ProcessingBuffer.Output[n+<span class="hljs-number">1</span>] = audio_chR[seperated_buf_index];
+		 seperated_buf_index ++;
+	 }
+}
+
+
+</div></code></pre>
+<p>The process buffer fuction is called everytime one of the input buffers finished being filled. As left and right channel samples are stored in an alternating pattern in the buffer they forst have to be seperated in the first for loop. The second for loop then casts the samples to float32_t in order to make them compatible with the filter function. The filter is then initialised using the length of the audio channel buffers (numTaps), the state of the last filter execution (pState, global variable) and the filter impulse response (h, stored in the filter header file). After initialisation, the filter is then applied to the left audio channel. The right channel is untouched in order to provide a comparison signal. After processing, the audio channel samples are written alternating to the output buffer.
+The final function includes more code that supports activating and deactivating the filter.
+Due to CPU limitations the filter is appplied to the left channel only. Alternatives using a shorter impuse response and stereo processing did not provide the desired sound quality, which forced this compromise.</p>
+<hr>
+<h2 id="summary">Summary</h2>
+<p>In summary, the project was scaled down a lot during development due to performance constraints of the CPU. The final software is a DMA based FIR filter system.<br>
+The UI could need some fine tuning in case of the touch sensitivity, but overall it works pretty well.</p>
+<hr>
+<h2 id="appendix">Appendix</h2>
+<ul>
+<li><strong>List of abbreviations</strong>
+<ul>
+<li>FIR - finite  impulse response</li>
+<li>DMA - direct memory access</li>
+<li>ISR - interrupt service routine</li>
+<li>CPU - central processing unit</li>
+<li>codec - encoder/decoder unit</li>
+<li>SAI - serial audio interface</li>
+<li>DSI - display serial interface</li>
+<li>UI - user interface</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="quotations">Quotations</h2>
+<p><a href="https://pdfs.semanticscholar.org/48a5/32a015e3cbb863e28b6cca8ad4ca849065b7.pdf">paper on schroeder reverb</a></p>
+<p><a href="https://medium.com/the-seekers-project/coding-a-basic-reverb-algorithm-part-2-an-introduction-to-audio-programming-4db79dd4e325">inspiration for schroeder reverb implementation</a></p>
+<p><a href="http://www.echothief.com/">source of the used impulse responses</a></p>
+<p><a href="https://www.keil.com/pack/doc/CMSIS/DSP/html/group__FIR.html#ga0cf008f650a75f5e2cf82d10691b64d9">filterfunction documentation</a></p>
+<p><a href="https://www.keil.com/pack/doc/CMSIS/DSP/html/index.html">other filterfunctions considered during development</a></p>
+
+    </body>
+    </html>
