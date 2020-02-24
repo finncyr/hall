@@ -1,6 +1,7 @@
 # hall
 ------
-*please note: * 
+*please note:*
+
 *all documentation relevant for grading this project can be found in finalReport.docx*
 
 ------
