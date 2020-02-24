@@ -1,5 +1,9 @@
 # hall
 ------
+*please note* 
+*all documentation relevant for grading this project can be found in finalReport.docx*
+
+------
 *Project for SMMD in WS 19/20*
 *Participants: Finn Cyriax, Manuel Faatz*
 
