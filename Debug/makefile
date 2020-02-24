@@ -14,8 +14,6 @@ RM := rm -rf
 -include Src/Audio/subdir.mk
 -include Src/subdir.mk
 -include Drivers/STM32F7xx_HAL_Driver/Src/subdir.mk
--include Drivers/BSP/STM32F769I-Discovery/subdir.mk
--include Drivers/BSP/Components/subdir.mk
 -include subdir.mk
 -include objects.mk
 

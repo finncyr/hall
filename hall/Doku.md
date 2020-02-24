@@ -1,4 +1,0 @@
-#Dokumentation
-
-##Aktuelle Umsetzung
-###Filter
