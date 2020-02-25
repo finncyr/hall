@@ -3,6 +3,7 @@
 *please note:*
 
 *all documentation relevant for grading this project can be found in finalReport.docx*
+
 *the .elf file which we use can be found under [this link](https://github.com/finncyr/hall/releases/tag/1.1)*
 
 ------
